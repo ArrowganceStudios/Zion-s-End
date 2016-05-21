@@ -32,5 +32,8 @@
     <ClInclude Include="..\Zion%27s End\src\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Zion%27s End\src\Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

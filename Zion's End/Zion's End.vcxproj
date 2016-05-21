@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Zion%27s End\src\Game.h" />
+    <ClInclude Include="..\Zion%27s End\src\Math.h" />
     <ClInclude Include="..\Zion%27s End\src\Resources.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

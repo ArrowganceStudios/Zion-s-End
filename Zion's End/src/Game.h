@@ -16,6 +16,6 @@ public:
 	void Shutdown();
 
 private:
-	Resources* mp_Resources;
-	sf::RenderWindow* mp_RenderTarget;
+	Resources*			m_pResources;
+	sf::RenderWindow*	m_pRenderTarget;
 };
