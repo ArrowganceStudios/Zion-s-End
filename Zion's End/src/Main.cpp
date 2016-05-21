@@ -1,24 +1,28 @@
 #include <SFML/Graphics.hpp>
+#include "Game.h"
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow mainWindow(sf::VideoMode(1024, 768), "Zion's End", sf::Style::Close);
+	mainWindow.setFramerateLimit(60);
 
-	while (window.isOpen())
+	Game instance;
+	instance.Init(mainWindow);
+
+	sf::Clock g_Clock;
+	while (mainWindow.isOpen())
 	{
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (mainWindow.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
-				window.close();
+				mainWindow.close();
 		}
 
-		window.clear();
-		window.draw(shape);
-		window.display();
+		instance.Update(g_Clock.restart());
+		instance.Render();
 	}
 
+	instance.Shutdown();
 	return 0;
 }

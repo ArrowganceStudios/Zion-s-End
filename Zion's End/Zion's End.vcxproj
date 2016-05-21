@@ -19,7 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Zion%27s End\src\Game.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Main.cpp" />
+    <ClCompile Include="..\Zion%27s End\src\Resources.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Zion%27s End\src\Game.h" />
+    <ClInclude Include="..\Zion%27s End\src\Resources.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2A8C231E-AD6B-4AEF-94B5-38F8227E2F01}</ProjectGuid>
