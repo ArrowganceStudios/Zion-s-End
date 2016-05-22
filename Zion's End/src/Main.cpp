@@ -23,6 +23,5 @@ int main()
 		instance.Render();
 	}
 
-	instance.Shutdown();
 	return 0;
 }
