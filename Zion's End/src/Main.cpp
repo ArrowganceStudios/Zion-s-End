@@ -5,7 +5,6 @@ int main()
 {
 	sf::RenderWindow mainWindow(sf::VideoMode(1024, 768), "Zion's End", sf::Style::Close);
 	mainWindow.setFramerateLimit(60);
-
 	Game instance;
 	instance.Init(mainWindow);
 

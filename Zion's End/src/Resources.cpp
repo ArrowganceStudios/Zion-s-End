@@ -12,8 +12,6 @@ Resources::Resources()
 		m_rgTest[i].setFillColor(sf::Color::Red);
 		m_rgTest[i].setRadius(20);
 	}
-
-	m_Grid.Init();
 }
 
 Resources::~Resources()

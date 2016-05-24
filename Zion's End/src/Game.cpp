@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Math.h"
 #include <iostream>
+#include <fstream>
+#include <thread>
 
 Game::~Game()
 {
@@ -12,10 +14,7 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 	m_pResources = new Resources();
 	m_pRenderTarget = &r_TargetWindow;
 
-	// Debug
-	m_pResources->GetGrid()->SetTypeOfTileAt(0, 0, Grid::Tile::Type::START_TILE);
-	m_pResources->GetGrid()->SetTypeOfTileAt(0, 1, Grid::Tile::Type::START_TILE);
-	m_pResources->GetGrid()->SetTypeOfTileAt(0, 2, Grid::Tile::Type::START_TILE);
+	LoadMap();
 }
 
 void Game::Update(sf::Time deltaTime)
@@ -34,9 +33,18 @@ void Game::Update(sf::Time deltaTime)
 	}
 
 	// Debug
-	if (m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y, 1024, 768).type == Grid::Tile::Type::START_TILE)
+	if (m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y, 
+		m_pRenderTarget->getSize().x, m_pRenderTarget->getSize().y).type == Grid::Tile::Type::START_TILE)
+	{
 		std::cout << "On starting tile" << std::endl;
+	}
 
+	// Reload map on F1 (to be removed along with <thread> include)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
+	{
+		LoadMap();
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
 }
 
 void Game::Render()
@@ -44,26 +52,8 @@ void Game::Render()
 	m_pRenderTarget->clear();
 
 	//	render
-	// TODO fix the magic numbers (resolution)
-	float tileWidth = m_pResources->GetGrid()->GetTileWidth(1024);
-	float tileHeight = m_pResources->GetGrid()->GetTileHeight(768);
 
-	uint8 gridWidth = m_pResources->GetGrid()->GetGridWidth();
-	uint8 gridHeight = m_pResources->GetGrid()->GetGridHeight();
-
-	for (int i = 0; i < gridHeight; ++i)
-	{
-		for (int j = 0; j < gridWidth; ++j)
-		{
-			sf::RectangleShape rect({ tileWidth, tileHeight });
-			if ((i * (2 * gridWidth + 1) + j) % 2)
-				rect.setFillColor(sf::Color::Black);
-			else
-				rect.setFillColor(sf::Color::White);
-			rect.setPosition({ j * tileWidth, i * tileHeight });
-			m_pRenderTarget->draw(rect);
-		}
-	}
+	m_pResources->GetGrid()->Render(*m_pRenderTarget);
 
 	m_pRenderTarget->draw(*m_pResources->GetPlayer());
 	for (int i = 0; i < m_pResources->GetEnemyCount(); ++i)
@@ -72,4 +62,19 @@ void Game::Render()
 	//	endrender
 
 	m_pRenderTarget->display();
+}
+
+void Game::LoadMap()
+{
+	std::ifstream mapFile("assets/map0.map");
+	unsigned int j = 0;
+
+	for (std::string line; std::getline(mapFile, line); ++j)
+	{
+		for (unsigned int i = 0; i < line.size(); ++i)
+		{
+			Grid::Tile::Type type = (Grid::Tile::Type) (line[i] - '0');
+			m_pResources->GetGrid()->SetTypeOfTileAt(j, i, type);
+		}
+	}
 }

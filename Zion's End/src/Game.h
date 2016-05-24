@@ -19,6 +19,9 @@ public:
 	void Render();
 
 private:
+	void LoadMap();
+
+private:
 	Resources*			m_pResources;
 	sf::RenderWindow*	m_pRenderTarget;
 };
