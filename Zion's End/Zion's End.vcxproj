@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="..\Zion%27s End\src\Game.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Grid.cpp" />
+    <ClCompile Include="..\Zion%27s End\src\GUI.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Main.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Zion%27s End\src\Game.h" />
     <ClInclude Include="..\Zion%27s End\src\Grid.h" />
+    <ClInclude Include="..\Zion%27s End\src\GUI.h" />
     <ClInclude Include="..\Zion%27s End\src\LiteralTypes.h" />
     <ClInclude Include="..\Zion%27s End\src\Math.h" />
     <ClInclude Include="..\Zion%27s End\src\Resources.h" />

@@ -38,13 +38,17 @@ void Game::Update(sf::Time deltaTime)
 	{
 		std::cout << "On starting tile" << std::endl;
 	}
-
 	// Reload map on F1 (to be removed along with <thread> include)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
 	{
 		LoadMap();
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
+
+	m_pResources->GetGUI()->Update(deltaTime);
+	m_pResources->GetGUI()->RequestMessage("XD", { float(rand() % 1024), float(rand() % 768) }, (GUI::MessageType)(rand() % 3));
+	m_pResources->GetGUI()->UpdateMoneyValue(rand() % 10000);
+	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 }
 
 void Game::Render()
@@ -59,6 +63,7 @@ void Game::Render()
 	for (int i = 0; i < m_pResources->GetEnemyCount(); ++i)
 		m_pRenderTarget->draw(m_pResources->GetEnemyArray()[i]);
 
+	m_pResources->GetGUI()->Render(*m_pRenderTarget);
 	//	endrender
 
 	m_pRenderTarget->display();

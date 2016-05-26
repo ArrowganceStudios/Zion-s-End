@@ -27,6 +27,9 @@
     <ClCompile Include="..\Zion%27s End\src\Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Zion%27s End\src\GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Zion%27s End\src\Game.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Zion%27s End\src\LiteralTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Zion%27s End\src\GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
