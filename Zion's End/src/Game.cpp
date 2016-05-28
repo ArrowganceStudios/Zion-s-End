@@ -6,7 +6,8 @@
 
 Game::~Game()
 {
-	delete m_pResources;
+	if(m_pResources)
+		delete m_pResources;
 }
 
 void Game::Init(sf::RenderWindow &r_TargetWindow)
@@ -14,41 +15,22 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 	m_pResources = new Resources();
 	m_pRenderTarget = &r_TargetWindow;
 
+	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
+	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
+
 	LoadMap();
+	Enemy* enemy = m_pResources->GetEnemy();
+	*enemy = Enemy(m_pResources->GetEnemyGraphics(), m_pResources->GetGrid());
 }
 
 void Game::Update(sf::Time deltaTime)
 {
 	sf::Vector2f mousePos((float)sf::Mouse::getPosition(*m_pRenderTarget).x, (float)sf::Mouse::getPosition(*m_pRenderTarget).y);
-	auto p_Player = m_pResources->GetPlayer();
-	auto p_Enemies = m_pResources->GetEnemyArray();
 
-	sf::Vector2f directionToMouse = as::Direction(p_Player->getPosition(), mousePos);
-	p_Player->move(directionToMouse * deltaTime.asSeconds() * m_pResources->GetPlayerVel());
-
-	for (int i = 0; i < m_pResources->GetEnemyCount(); ++i)
-	{
-		sf::Vector2f directionToPlayer = as::Direction(p_Enemies[i].getPosition(), p_Player->getPosition());
-		p_Enemies[i].move(directionToPlayer * deltaTime.asSeconds() * m_pResources->GetEnemyVel());
-	}
-
-	// Debug
-	if (m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y, 
-		m_pRenderTarget->getSize().x, m_pRenderTarget->getSize().y).type == Grid::Tile::Type::START_TILE)
-	{
-		std::cout << "On starting tile" << std::endl;
-	}
-	// Reload map on F1 (to be removed along with <thread> include)
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1))
-	{
-		LoadMap();
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	}
-
-	m_pResources->GetEnemy()->Update(deltaTime);
+	m_pResources->GetEnemy()->Update(deltaTime, m_pResources->GetGrid());
 
 	m_pResources->GetGUI()->Update(deltaTime);
-	m_pResources->GetGUI()->RequestMessage("XD", { float(rand() % 1024), float(rand() % 768) }, (GUI::MessageType)(rand() % 3));
+	m_pResources->GetGUI()->RequestMessage("XD", m_pResources->GetEnemy()->GetPosition(), (GUI::MessageType)(rand() % 3));
 	m_pResources->GetGUI()->UpdateMoneyValue(rand() % 10000);
 	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 }
@@ -60,10 +42,6 @@ void Game::Render()
 	//	render
 
 	m_pResources->GetGrid()->Render(*m_pRenderTarget);
-
-	m_pRenderTarget->draw(*m_pResources->GetPlayer());
-	for (int i = 0; i < m_pResources->GetEnemyCount(); ++i)
-		m_pRenderTarget->draw(m_pResources->GetEnemyArray()[i]);
 
 	m_pResources->GetEnemy()->Render(*m_pRenderTarget);
 

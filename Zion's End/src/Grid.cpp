@@ -14,11 +14,11 @@ Grid::Grid()
 
 				if (column > 0)
 				{
-					m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column - 1]);
+					//m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column - 1]);
 				}
 				if (column < s_Width - 1)
 				{
-					m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column + 1]);
+					//m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column + 1]);
 				}
 			}
 
@@ -38,14 +38,23 @@ Grid::Grid()
 
 				if (column > 0)
 				{
-					m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column - 1]);
+					//m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column - 1]);
 				}
 
 				if (column < s_Width - 1)
 				{
-					m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column + 1]);
+					//m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column + 1]);
 				}
 			}
+		}
+	}
+
+	int iterator = 0;
+	for (int i = 0; i < s_Height; ++i)
+	{
+		for (int j = 0; j < s_Width; ++j)
+		{
+			m_Tiles[i][j].index = iterator++;
 		}
 	}
 
@@ -65,14 +74,14 @@ Grid::Grid()
 	m_BookSprite.setScale(scale, scale);
 }
 
-const Grid::Tile Grid::GetTileAtPixel(float x, float y, uint16 windowWidth, uint16 windowHeight)
+const Grid::Tile Grid::GetTileAtPixel(float x, float y)
 {
 	if (x > 1.0f &&
 		y > 1.0f &&
-		x + 1.0f <= (float)windowWidth &&
-		y + 1.0f <= (float)windowHeight)
+		x + 1.0f <= (float)m_WindowSize.x &&
+		y + 1.0f <= (float)m_WindowSize.y)
 	{
-		return GetTileReferenceAtPixel(x, y, windowWidth, windowHeight);
+		return GetTileReferenceAtPixel(x, y);
 	}
 	else
 	{
@@ -80,21 +89,62 @@ const Grid::Tile Grid::GetTileAtPixel(float x, float y, uint16 windowWidth, uint
 	}
 }
 
-void Grid::SetTypeOfTileAtPixel(float x, float y, uint16 windowWidth, uint16 windowHeight, Tile::Type type)
+const sf::Vector2f Grid::GetCenterOfTileIndexedBy(uint8 tileIndex)
+{
+	sf::Vector2u tileCellPosition = GetTileRowColumnFromIndex(tileIndex);
+	const uint8 column = tileCellPosition.x;
+	const uint8 row =	 tileCellPosition.y;
+
+	return GetTileCenterAt(column, row);
+}
+
+const sf::Vector2f Grid::GetTileCenterAt(uint8 column, uint8 row) const
+{
+	const float tileWidth = GetTileWidth();
+	const float tileHeight = GetTileHeight();
+
+	const float x = tileWidth * ((float)column + 0.5f);
+	const float y = tileHeight * ((float)row + 0.5f);
+
+	return { x, y };
+}
+
+void Grid::SetTypeOfTileAtPixel(float x, float y, Tile::Type type)
 {
 	if (x > 1.0f &&
 		y > 1.0f &&
-		x + 1.0f <= (float)windowWidth &&
-		y + 1.0f <= (float)windowHeight)
+		x + 1.0f <= (float)m_WindowSize.x &&
+		y + 1.0f <= (float)m_WindowSize.y)
 	{
-		GetTileReferenceAtPixel(x, y, windowWidth, windowHeight).type = type;
+		GetTileReferenceAtPixel(x, y).type = type;
+	}
+}
+
+const std::vector<Grid::Tile*> Grid::GetNeighboursOf(uint8 index)
+{
+	sf::Vector2u tileCellPosition = GetTileRowColumnFromIndex(index);
+	const uint8 column = tileCellPosition.x;
+	const uint8 row = tileCellPosition.y;
+
+	return m_Neighbours[row][column];
+}
+
+const uint8 Grid::GetStartingTileIndex() const
+{
+	for (int i = 0; i < s_Height; ++i)
+	{
+		for (int j = 0; j < s_Width; ++j)
+		{
+			if (m_Tiles[i][j].type == Grid::Tile::Type::START_TILE)
+				return m_Tiles[i][j].index;
+		}
 	}
 }
 
 void Grid::Render(sf::RenderTarget& renderer)
 {
-	const float tileWidth = GetTileWidth(renderer.getSize().x);
-	const float tileHeight = GetTileHeight(renderer.getSize().y);
+	const float tileWidth = GetTileWidth();
+	const float tileHeight = GetTileHeight();
 
 	for (unsigned int i = 0; i < s_Height; ++i)
 	{
@@ -108,13 +158,13 @@ void Grid::Render(sf::RenderTarget& renderer)
 	}
 }
 
-Grid::Tile& Grid::GetTileReferenceAtPixel(float x, float y, uint16 windowWidth, uint16 windowHeight)
+Grid::Tile& Grid::GetTileReferenceAtPixel(float x, float y)
 {
-	float normalizedX = x / (float)windowWidth;
-	float normalizedY = y / (float)windowHeight;
+	const float normalizedX = x / (float)m_WindowSize.x;
+	const float normalizedY = y / (float)m_WindowSize.y;
 
-	uint8 tiledX = (uint8)(normalizedX * s_Width); // TODO: Check if it rounds/floors properly
-	uint8 tiledY = (uint8)(normalizedY * s_Height);
+	const uint8 tiledX = (uint8)(normalizedX * s_Width); // TODO: Check if it rounds/floors properly
+	const uint8 tiledY = (uint8)(normalizedY * s_Height);
 
 	return m_Tiles[tiledY][tiledX];
 }
@@ -137,4 +187,12 @@ sf::Sprite& Grid::GetSpriteFor(const Tile& tile)
 		return m_GrassSprite;
 		break;
 	}
+}
+
+sf::Vector2u Grid::GetTileRowColumnFromIndex(uint8 index)
+{
+	const uint8 row	   = index / s_Width;
+	const uint8 column = index % s_Width;
+
+	return { column, row};
 }

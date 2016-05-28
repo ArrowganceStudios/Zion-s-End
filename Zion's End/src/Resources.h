@@ -13,13 +13,7 @@ public:
 	Grid*			 GetGrid()			{ return &m_Grid; }
 	GUI*			 GetGUI()			{ return &m_GUI; }
 	Enemy*			 GetEnemy()			{ return &m_Enemy; }
-
-	sf::CircleShape* GetPlayer()		{ return &m_Test; }
-	sf::CircleShape* GetEnemyArray()	{ return m_rgTest; }
-	int				 GetEnemyCount()	{ return m_nEnemies; }
-
-	float			 GetPlayerVel()		{ return m_PlayerVelocity; }
-	float			 GetEnemyVel()		{ return m_EnemyVelocity; }
+	Enemy::Graphics* GetEnemyGraphics() { return &m_EnemyGraphics; }
 
 private:
 	//	memory content
@@ -27,11 +21,4 @@ private:
 	GUI				m_GUI;
 	Enemy			m_Enemy;
 	Enemy::Graphics m_EnemyGraphics;
-
-	sf::CircleShape m_Test;
-	sf::CircleShape m_rgTest[20];
-	int				m_nEnemies = 20;
-	
-	float			m_PlayerVelocity = 120.f;
-	float			m_EnemyVelocity = 50.f;
 };

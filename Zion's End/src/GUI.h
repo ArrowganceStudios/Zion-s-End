@@ -24,6 +24,8 @@ public:
 	GUI();
 	~GUI();
 
+	void SetWindowSize(sf::Vector2u size) { m_WindowSize = size; }
+
 	void Render(sf::RenderTarget& renderer) const;
 	void Update(sf::Time deltaTime);
 
@@ -37,6 +39,8 @@ private:
 	sf::Text m_MoneyText;
 	sf::Text m_HealthText;
 	sf::Text m_CurrentTileText;
+
+	sf::Vector2u m_WindowSize;
 
 	struct Message
 	{

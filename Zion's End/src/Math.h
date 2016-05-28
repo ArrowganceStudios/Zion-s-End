@@ -37,4 +37,12 @@ namespace as
 	{
 		return Normalize(destination - source);
 	}
+
+	/**
+		Returns value in degrees, provided argument in radians
+	*/
+	inline float RadToDeg(float angle)
+	{
+		return angle * 57.2957795f;
+	}
 }

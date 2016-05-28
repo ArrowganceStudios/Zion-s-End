@@ -31,6 +31,7 @@ public:
 
 	public:
 		Type type;
+		uint8 index;
 		// std::vector<GameObject> occupants;
 	};
 
@@ -41,24 +42,24 @@ public:
 	Grid();
 
 	/**
-		Returns the tile located at {row, column}
+		Sets window size
 	*/
-	const Tile GetTileAt(uint8 column, uint8 row) const { return m_Tiles[row][column]; }
+	void SetWindowSize(sf::Vector2u size) { m_WindowSize = size; }
 
 	/**
 		Returns tile located at pixel {x, y}
 	*/
-	const Tile GetTileAtPixel(float x, float y, uint16 windowWidth, uint16 windowHeight);
+	const Tile GetTileAtPixel(float x, float y);
 
 	/**
 		Returns the width of the tile in pixels
 	*/
-	const float GetTileWidth(uint16 windowWidth) const { return windowWidth / (float)s_Width; }
+	const float GetTileWidth() const { return m_WindowSize.x / (float)s_Width; }
 
 	/**
 		Returns the height of the tile in pixels
 	*/
-	const float GetTileHeight(uint16 windowHeight) const { return windowHeight / (float)s_Height; }
+	const float GetTileHeight() const { return m_WindowSize.y / (float)s_Height; }
 
 	/**
 		Returns the width of the grid in tiles
@@ -71,6 +72,16 @@ public:
 	const uint8 GetGridHeight() const { return s_Height; }
 
 	/**
+		Returns the center (in pixels) of tile indicated by specified tileIndex
+	*/
+	const sf::Vector2f GetCenterOfTileIndexedBy(uint8 tileIndex);
+
+	/**
+		Returns the center (in pixels) of tile indicated by its row and column
+	*/
+	const sf::Vector2f GetTileCenterAt(uint8 column, uint8 row) const;
+
+	/**
 		Sets type of a tile indicated by it's tile coordinates
 	*/
 	void SetTypeOfTileAt(uint8 row, uint8 column, Tile::Type type) { m_Tiles[row][column].type = type; }
@@ -78,12 +89,17 @@ public:
 	/**
 		Sets type of a tile indicated by it's pixel coordinates
 	*/
-	void SetTypeOfTileAtPixel(float x, float y, uint16 windowWidth, uint16 windowHeight, Tile::Type type);
+	void SetTypeOfTileAtPixel(float x, float y, Tile::Type type);
 
 	/**
 		Returns vector of tiles that are neighbour of tile positioned at {row, column}
 	*/
-	const std::vector<Tile*> GetNeighboursOf(uint8 column, uint8 row) { return m_Neighbours[row][column]; }
+	const std::vector<Tile*> GetNeighboursOf(uint8 index);
+
+	/**
+		Returns the index of starting tile
+	*/
+	const uint8 GetStartingTileIndex() const;
 
 	/**
 		Renders the grid
@@ -94,16 +110,22 @@ private:
 	/**
 		Returns reference to the tile at specified pixel position {x, y}
 	*/
-	Tile& GetTileReferenceAtPixel(float x, float y, uint16 windowWidth, uint16 windowHeight);
+	Tile& GetTileReferenceAtPixel(float x, float y);
 
 	/**
 		Returns a sprite corresponding to passed tile
 	*/
 	sf::Sprite& Grid::GetSpriteFor(const Tile& tile);
 
+	/**
+		Retrieves the index and column from provided tile index
+	*/
+	sf::Vector2u GetTileRowColumnFromIndex(uint8 index);
+
 private:
 	static constexpr uint8 s_Width = 12;
 	static constexpr uint8 s_Height = 9;
+	sf::Vector2u		   m_WindowSize;
 	Tile				   m_Tiles[s_Height][s_Width];	   // Row-major
 	std::vector<Tile*>	   m_Neighbours[s_Height][s_Width];
 	sf::Texture			   m_TerrainTexture;

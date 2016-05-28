@@ -121,7 +121,7 @@ void GUI::MessageBuffer::Erode(sf::Time timeStep)
 	{
 		Message &msgRef = m_Messages[i % MAX_MESSAGES];
 		msgRef.m_LifeTime -= timeStep;
-		msgRef.m_Text.move({ 0, -timeStep.asSeconds() * 30 });
+		msgRef.m_Text.move({ sinf(float(rand() % 10) / 10.0f), -timeStep.asSeconds() * 30 });
 	}
 
 	if (m_Messages[m_IdxOfFirst].m_LifeTime < sf::seconds(0)) Pop();
