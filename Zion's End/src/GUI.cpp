@@ -24,6 +24,10 @@ GUI::GUI()
 	m_HealthText.setCharacterSize(30);
 	m_HealthText.setFont(m_DefaultFont);
 	m_HealthText.setPosition({ 0, 80 });
+
+	m_BufferText.setCharacterSize(30);
+	m_BufferText.setFont(m_DefaultFont);
+	m_BufferText.setPosition({ 0, 120 });
 }
 
 GUI::~GUI()
@@ -35,6 +39,7 @@ void GUI::Render(sf::RenderTarget & renderer) const
 	renderer.draw(m_TitleText);
 	renderer.draw(m_MoneyText);
 	renderer.draw(m_HealthText);
+	renderer.draw(m_BufferText);
 
 	for (int i = 0; i < MAX_MESSAGES; ++i)
 	{
@@ -47,6 +52,7 @@ void GUI::Render(sf::RenderTarget & renderer) const
 void GUI::Update(sf::Time deltaTime)
 {
 	m_MessageBuffer.Erode(deltaTime);
+	UpdateBufferValue();
 }
 
 void GUI::UpdateMoneyValue(int newValue)
@@ -75,6 +81,7 @@ void GUI::MessageBuffer::Push(sf::String message, sf::Vector2f position, GUI::Me
 
 	msgRef.m_Text.setString(message);
 	msgRef.m_Text.setPosition(position);
+	msgRef.m_Text.setOrigin( {msgRef.m_Text.getLocalBounds().width / 2, msgRef.m_Text.getLocalBounds().height / 2});
 	msgRef.m_LifeTime = sf::seconds(MESSAGE_DURATION_SECONDS);
 	msgRef.m_Alive = true;
 
@@ -121,7 +128,7 @@ void GUI::MessageBuffer::Erode(sf::Time timeStep)
 	{
 		Message &msgRef = m_Messages[i % MAX_MESSAGES];
 		msgRef.m_LifeTime -= timeStep;
-		msgRef.m_Text.move({ sinf(float(rand() % 10) / 10.0f), -timeStep.asSeconds() * 30 });
+		msgRef.m_Text.move({sinf(10 * msgRef.m_LifeTime.asSeconds()), -timeStep.asSeconds() * 40 });
 	}
 
 	if (m_Messages[m_IdxOfFirst].m_LifeTime < sf::seconds(0)) Pop();

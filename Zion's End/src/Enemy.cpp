@@ -21,7 +21,7 @@ void Enemy::Graphics::Render(sf::RenderTarget & renderer, const sf::Vector2f pos
 Enemy::Enemy(Graphics * graphicsComponent, Grid * grid) : m_pGraphics(graphicsComponent)
 														, m_CurrentTileIndex(grid->GetStartingTileIndex())
 														, m_TargetTileIndex(grid->GetStartingTileIndex() + 1) //TEMP!
-														, m_Velocity(200.0f)
+														, m_Velocity(100.0f)
 {
 	m_pGraphics = graphicsComponent;
 	m_Position = grid->GetCenterOfTileIndexedBy(grid->GetStartingTileIndex());
@@ -49,7 +49,8 @@ void Enemy::Update(sf::Time deltaTime, Grid* grid)
 
 void Enemy::Render(sf::RenderTarget& renderer)
 {
-	m_pGraphics->Render(renderer, m_Position);
+	if(m_pGraphics)
+		m_pGraphics->Render(renderer, m_Position);
 	/* debug
 	sf::CircleShape target(5.0f);
 	target.setPosition(m_Target);
