@@ -24,7 +24,7 @@ public:
 	GUI();
 	~GUI();
 
-	void Render(sf::RenderTarget& renderer);
+	void Render(sf::RenderTarget& renderer) const;
 	void Update(sf::Time deltaTime);
 
 	void UpdateMoneyValue(int newValue);

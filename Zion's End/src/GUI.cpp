@@ -30,7 +30,7 @@ GUI::~GUI()
 {
 }
 
-void GUI::Render(sf::RenderTarget & renderer)
+void GUI::Render(sf::RenderTarget & renderer) const
 {
 	renderer.draw(m_TitleText);
 	renderer.draw(m_MoneyText);
@@ -38,7 +38,7 @@ void GUI::Render(sf::RenderTarget & renderer)
 
 	for (int i = 0; i < MAX_MESSAGES; ++i)
 	{
-		Message &msgRef = m_MessageBuffer.m_Messages[i];
+		const Message &msgRef = m_MessageBuffer.m_Messages[i];
 		if (msgRef.m_Alive)
 			renderer.draw(msgRef.m_Text);
 	}

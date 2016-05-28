@@ -19,7 +19,7 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 
 void Game::Update(sf::Time deltaTime)
 {
-	sf::Vector2f mousePos(sf::Mouse::getPosition(*m_pRenderTarget).x, sf::Mouse::getPosition(*m_pRenderTarget).y);
+	sf::Vector2f mousePos((float)sf::Mouse::getPosition(*m_pRenderTarget).x, (float)sf::Mouse::getPosition(*m_pRenderTarget).y);
 	auto p_Player = m_pResources->GetPlayer();
 	auto p_Enemies = m_pResources->GetEnemyArray();
 
@@ -45,6 +45,8 @@ void Game::Update(sf::Time deltaTime)
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 
+	m_pResources->GetEnemy()->Update(deltaTime);
+
 	m_pResources->GetGUI()->Update(deltaTime);
 	m_pResources->GetGUI()->RequestMessage("XD", { float(rand() % 1024), float(rand() % 768) }, (GUI::MessageType)(rand() % 3));
 	m_pResources->GetGUI()->UpdateMoneyValue(rand() % 10000);
@@ -62,6 +64,8 @@ void Game::Render()
 	m_pRenderTarget->draw(*m_pResources->GetPlayer());
 	for (int i = 0; i < m_pResources->GetEnemyCount(); ++i)
 		m_pRenderTarget->draw(m_pResources->GetEnemyArray()[i]);
+
+	m_pResources->GetEnemy()->Render(*m_pRenderTarget);
 
 	m_pResources->GetGUI()->Render(*m_pRenderTarget);
 	//	endrender

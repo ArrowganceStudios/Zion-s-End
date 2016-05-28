@@ -134,7 +134,7 @@ sf::Sprite& Grid::GetSpriteFor(const Tile& tile)
 	case Grid::Tile::Type::END_TILE:
 		return m_BookSprite;
 	default:	
-		_ASSERT(false);
+		return m_GrassSprite;
 		break;
 	}
 }
