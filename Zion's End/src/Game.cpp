@@ -18,15 +18,7 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
 
-	LoadMap();
-
-	Enemy* enemy = m_pResources->GetEnemies();
-	for (int i = 0; i < MAX_ENEMIES; ++i)
-	{
-		//*enemy = Enemy(m_pResources->GetEnemyGraphics(), m_pResources->GetGrid());
-		*enemy = Enemy();
-		++enemy;
-	}
+	LoadMap("assets/map0.map");
 }
 
 void Game::Update(sf::Time deltaTime)
@@ -51,7 +43,7 @@ void Game::Update(sf::Time deltaTime)
 	{
 		if (enemyIdx < MAX_ENEMIES)
 		{
-			enemy[enemyIdx] = Enemy(m_pResources->GetEnemyGraphics(), m_pResources->GetGrid());
+			enemy[enemyIdx] = Enemy(*m_pResources->GetEnemyGraphics(), m_pResources->GetGrid());
 			enemySpawnTimer -= sf::seconds(0.5f);
 			++enemyIdx;
 		}
@@ -82,9 +74,9 @@ void Game::Render()
 	m_pRenderTarget->display();
 }
 
-void Game::LoadMap()
+void Game::LoadMap(const char* pathToMap)
 {
-	std::ifstream mapFile("assets/map0.map");
+	std::ifstream mapFile(pathToMap);
 	unsigned int j = 0;
 
 	for (std::string line; std::getline(mapFile, line); ++j)

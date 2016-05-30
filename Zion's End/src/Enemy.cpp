@@ -1,15 +1,24 @@
 #include "Enemy.h"
 #include "Math.h"
 
-Enemy::Graphics::Graphics(const char * fileName)
+Enemy::Graphics::Graphics(sf::Texture* texture)
 {
-	m_Texture.loadFromFile(fileName);
+	m_pTexture = texture;
 
 	constexpr uint8 textureSize = 128;
-	m_IdleSprite.setTexture(m_Texture);
+	m_IdleSprite.setTexture(*m_pTexture);
 	m_IdleSprite.setTextureRect(sf::IntRect(4 * textureSize, 5 * textureSize, textureSize, textureSize));
 	m_IdleSprite.setOrigin(textureSize / 2, textureSize / 2);
-	m_IdleSprite.setRotation(90.0f); // TEMP: until we introduce animations
+}
+
+void Enemy::Graphics::SetTexture(sf::Texture * texture)
+{
+	m_pTexture = texture;
+
+	constexpr uint8 textureSize = 128;
+	m_IdleSprite.setTexture(*m_pTexture);
+	m_IdleSprite.setTextureRect(sf::IntRect(4 * textureSize, 5 * textureSize, textureSize, textureSize));
+	m_IdleSprite.setOrigin(textureSize / 2, textureSize / 2);
 }
 
 void Enemy::Graphics::Render(sf::RenderTarget & renderer, const sf::Vector2f position)
@@ -18,16 +27,13 @@ void Enemy::Graphics::Render(sf::RenderTarget & renderer, const sf::Vector2f pos
 	renderer.draw(m_IdleSprite);
 }
 
-Enemy::Enemy(Graphics * graphicsComponent, Grid * grid) : m_pGraphics(graphicsComponent)
-														, m_CurrentTileIndex(grid->GetStartingTileIndex())
-														, m_TargetTileIndex(grid->GetStartingTileIndex() + 1) //TEMP!
-														, m_Velocity(100.0f)
+Enemy::Enemy(Graphics& graphicsComponent, Grid * grid) : m_Graphics(graphicsComponent)
+													   , m_CurrentTileIndex(grid->GetStartingTileIndex())
+													   , m_Position(grid->GetCenterOfTileIndexedBy(grid->GetStartingTileIndex()))
+													   , m_TargetTileIndex(m_CurrentTileIndex)
+													   , m_Target(m_Position)
+													   , m_Velocity(100.0f)
 {
-	m_pGraphics = graphicsComponent;
-	m_Position = grid->GetCenterOfTileIndexedBy(grid->GetStartingTileIndex());
-
-	auto tile = ChooseNewTileTarget(grid);
-	SetNewTarget(grid, tile);
 }
 
 void Enemy::Update(sf::Time deltaTime, Grid* grid)
@@ -49,8 +55,7 @@ void Enemy::Update(sf::Time deltaTime, Grid* grid)
 
 void Enemy::Render(sf::RenderTarget& renderer)
 {
-	if(m_pGraphics)
-		m_pGraphics->Render(renderer, m_Position);
+	m_Graphics.Render(renderer, m_Position);
 	/* debug
 	sf::CircleShape target(5.0f);
 	target.setPosition(m_Target);
@@ -81,9 +86,7 @@ void Enemy::SetNewTarget(Grid * grid, Grid::Tile * tile)
 	m_TargetTileIndex = tile->index;
 	m_Target = grid->GetCenterOfTileIndexedBy(tile->index);
 
-	auto newDirection = as::Direction(m_Position, m_Target);
-	float angle = copysignf(1, atan2f(m_Direction.x - newDirection.x, m_Direction.y - newDirection.y)) * as::RadToDeg(acosf(as::Dot(m_Direction, newDirection)));
-	m_pGraphics->Rotate(angle);
-
-	m_Direction = newDirection;
+	m_Direction = as::Direction(m_Position, m_Target);
+	float angle = as::RadToDeg(atan2(m_Direction.y, m_Direction.x));
+	m_Graphics.SetRotation(angle);
 }

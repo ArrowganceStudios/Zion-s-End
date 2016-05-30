@@ -14,12 +14,12 @@ public:
 	Game(const Game&)			 = delete;
 	Game& operator=(const Game&) = delete;
 
-	void Init(sf::RenderWindow &r_TargetWindow); // I think it should be moved to constructor so that the destructor can safely delete m_pResources
+	void Init(sf::RenderWindow &r_TargetWindow);
 	void Update(sf::Time deltaTime);
 	void Render();
 
 private:
-	void LoadMap();
+	void LoadMap(const char* pathToMap);
 
 private:
 	Resources*			m_pResources;

@@ -24,6 +24,7 @@ private:
 	Grid			m_Grid;
 	GUI				m_GUI;
 
+	sf::Texture		m_EnemyTexture;
 	Enemy::Graphics m_EnemyGraphics;
 	uint8			m_nEnemies = MAX_ENEMIES;
 	Enemy			m_Enemies[MAX_ENEMIES];

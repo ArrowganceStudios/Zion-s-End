@@ -12,10 +12,20 @@ public:
 	{
 	public:
 		/**
+			Default constructor, needs later assignment of a texture
+		*/
+		Graphics() = default;
+
+		/**
 			Constructs the graphics, and load the texture specified by the filePath provided in
 			an argument
 		*/
-		Graphics(const char* fileName);
+		Graphics(sf::Texture* texture);
+
+		/**
+			Sets the texture, and initializes the sprite
+		*/
+		void SetTexture(sf::Texture* texture);
 
 		/**
 			Rotates the sprite by (angle) degrees
@@ -23,12 +33,17 @@ public:
 		void Rotate(float angle) { m_IdleSprite.rotate(angle); }
 
 		/**
+			Sets the rotation of the sprite in (angle) degrees
+		*/
+		void SetRotation(float angle) { m_IdleSprite.setRotation(angle); }
+
+		/**
 			Renders the enemy based on the idle sprite and provided position
 		*/
 		void Render(sf::RenderTarget& renderer, const sf::Vector2f position);
 
 	private:
-		sf::Texture  m_Texture;
+		sf::Texture* m_pTexture;
 		sf::Sprite	 m_IdleSprite;
 	};
 
@@ -38,16 +53,22 @@ public:
 		through SetGraphicsComponent(Graphics*) method.
 	*/
 	Enemy() = default;
-	
-	/**
-		Constructs the enemy, setting the graphics component
-	*/
-	Enemy(Graphics* graphicsComponent) : m_pGraphics(graphicsComponent), m_Velocity(1.0f) {}
 
 	/**
-		Constructs the enemy, setting the graphics component, and starting tile
+		Creates invisible enemy, at pointed position (used for initial creation
+		of enemy, where we spawn him somewhere far away from the map
 	*/
-	Enemy(Graphics* graphicsComponent, Grid* grid);
+	Enemy(sf::Vector2f position) : m_Position(position) {};
+
+	/**
+		Constructs the enemy, setting the graphics component, and velocity to 1.
+	*/
+	Enemy(Graphics& graphicsComponent) : m_Graphics(graphicsComponent), m_Velocity(1.0f) {}
+
+	/**
+		Constructs the enemy, setting the graphics component, and position at starting tile
+	*/
+	Enemy(Graphics& graphicsComponent, Grid* grid);
 
 	/**
 		Called each gameloop iteration, performs AI operations
@@ -67,7 +88,7 @@ public:
 	/**
 		Sets the graphics component of the enemy
 	*/
-	void SetGraphicsComponent(Graphics* graphicsComponent) { m_pGraphics = graphicsComponent; }
+	void SetGraphicsComponent(Graphics& graphicsComponent) { m_Graphics = graphicsComponent; }
 
 private:
 	/**
@@ -88,5 +109,5 @@ private:
 	uint8		 m_CurrentTileIndex;
 	uint8		 m_TargetTileIndex;
 	uint8		 m_HealthPoints;
-	Graphics*	 m_pGraphics;
+	Graphics	 m_Graphics;
 };
