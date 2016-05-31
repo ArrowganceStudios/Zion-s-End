@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Math.h"
+#include "Tower.h"
 
 Enemy::Graphics::Graphics(sf::Texture* texture)
 {
@@ -56,12 +57,10 @@ void Enemy::Update(sf::Time deltaTime, Grid* grid)
 void Enemy::Render(sf::RenderTarget& renderer)
 {
 	m_Graphics.Render(renderer, m_Position);
-	/* debug
-	sf::CircleShape target(5.0f);
-	target.setPosition(m_Target);
-	renderer.draw(target); */
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4715)
 Grid::Tile* Enemy::ChooseNewTileTarget(Grid * grid)
 {
 	std::vector<Grid::Tile*> neighbours = grid->GetNeighboursOf(m_TargetTileIndex);
@@ -79,6 +78,7 @@ Grid::Tile* Enemy::ChooseNewTileTarget(Grid * grid)
 		}
 	}
 }
+#pragma warning(pop)
 
 void Enemy::SetNewTarget(Grid * grid, Grid::Tile * tile)
 {

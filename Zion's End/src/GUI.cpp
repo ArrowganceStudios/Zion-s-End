@@ -57,13 +57,11 @@ void GUI::Update(sf::Time deltaTime)
 
 void GUI::UpdateMoneyValue(int newValue)
 {
-	//m_MoneyText.setString("Money: " + newValue);	//	Safe code is safe
 	m_MoneyText.setString("Money: " + std::to_string(newValue));
 }
 
 void GUI::UpdateHealthValue(int newValue)
 {
-	//m_HealthText.setString("Health: " + newValue);
 	m_HealthText.setString("Health: " + std::to_string(newValue));
 }
 

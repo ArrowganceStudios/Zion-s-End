@@ -11,15 +11,6 @@ Grid::Grid()
 			if (row > 0)
 			{
 				m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column]);
-
-				if (column > 0)
-				{
-					//m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column - 1]);
-				}
-				if (column < s_Width - 1)
-				{
-					//m_Neighbours[row][column].push_back(&m_Tiles[row - 1][column + 1]);
-				}
 			}
 
 			if (column < s_Width - 1)
@@ -35,26 +26,15 @@ Grid::Grid()
 			if (row < s_Height - 1)
 			{
 				m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column]);
-
-				if (column > 0)
-				{
-					//m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column - 1]);
-				}
-
-				if (column < s_Width - 1)
-				{
-					//m_Neighbours[row][column].push_back(&m_Tiles[row + 1][column + 1]);
-				}
 			}
 		}
 	}
 
-	int iterator = 0;
 	for (int i = 0; i < s_Height; ++i)
 	{
 		for (int j = 0; j < s_Width; ++j)
 		{
-			m_Tiles[i][j].index = iterator++;
+			m_Tiles[i][j].index = i * s_Width + j;
 		}
 	}
 
@@ -62,15 +42,22 @@ Grid::Grid()
 	m_TerrainTexture.loadFromFile("assets/Terrain.png");
 
 	constexpr unsigned int textureSize = 256;
-	constexpr float scale = (768.0f / (float)s_Height) / textureSize;
 	m_GrassSprite.setTexture(m_TerrainTexture);
 	m_GrassSprite.setTextureRect(sf::IntRect(0, 0, textureSize, textureSize));
-	m_GrassSprite.setScale(scale, scale);
 	m_RockSprite.setTexture(m_TerrainTexture);
 	m_RockSprite.setTextureRect(sf::IntRect(textureSize, 0, textureSize, textureSize));
-	m_RockSprite.setScale(scale, scale);
 	m_BookSprite.setTexture(m_TerrainTexture);
 	m_BookSprite.setTextureRect(sf::IntRect(textureSize * 2, 0, textureSize, textureSize));
+}
+
+void Grid::SetWindowSize(sf::Vector2u size)
+{
+	m_WindowSize = size;
+	// Update sprite sizes
+	constexpr unsigned int textureSize = 256;
+	const float scale = (size.y /(float)s_Height) / textureSize;
+	m_GrassSprite.setScale(scale, scale);
+	m_RockSprite.setScale(scale, scale);
 	m_BookSprite.setScale(scale, scale);
 }
 
@@ -85,7 +72,7 @@ const Grid::Tile Grid::GetTileAtPixel(float x, float y)
 	}
 	else
 	{
-		return Tile();
+		return Tile(); //It should throw here in a fact
 	}
 }
 
@@ -129,8 +116,11 @@ const std::vector<Grid::Tile*> Grid::GetNeighboursOf(uint8 index)
 	return m_Neighbours[row][column];
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4715)
 const uint8 Grid::GetStartingTileIndex() const
 {
+
 	for (int i = 0; i < s_Height; ++i)
 	{
 		for (int j = 0; j < s_Width; ++j)
@@ -140,6 +130,7 @@ const uint8 Grid::GetStartingTileIndex() const
 		}
 	}
 }
+#pragma warning(pop)
 
 void Grid::Render(sf::RenderTarget& renderer)
 {
@@ -163,7 +154,7 @@ Grid::Tile& Grid::GetTileReferenceAtPixel(float x, float y)
 	const float normalizedX = x / (float)m_WindowSize.x;
 	const float normalizedY = y / (float)m_WindowSize.y;
 
-	const uint8 tiledX = (uint8)(normalizedX * s_Width); // TODO: Check if it rounds/floors properly
+	const uint8 tiledX = (uint8)(normalizedX * s_Width);
 	const uint8 tiledY = (uint8)(normalizedY * s_Height);
 
 	return m_Tiles[tiledY][tiledX];

@@ -3,8 +3,10 @@
 #include "Grid.h"
 #include "GUI.h"
 #include "Enemy.h"
+#include "Tower.h"
 
 constexpr unsigned int MAX_ENEMIES = 128;
+constexpr unsigned int MAX_TOWERS  = 32;
 
 class Resources
 {
@@ -19,6 +21,10 @@ public:
 	uint8			 GetNumOfEnemies()  { return m_nEnemies; }
 	Enemy*			 GetEnemies()		{ return m_Enemies; }
 
+	Tower::Graphics* GetTowerGraphics() { return &m_TowerGraphics; }
+	uint8			 GetNumOfTowers()	{ return m_nTowers; }
+	Tower*			 GetTowers()		{ return m_Towers; }
+
 private:
 	//	memory content
 	Grid			m_Grid;
@@ -28,4 +34,9 @@ private:
 	Enemy::Graphics m_EnemyGraphics;
 	uint8			m_nEnemies = MAX_ENEMIES;
 	Enemy			m_Enemies[MAX_ENEMIES];
+
+	sf::Texture		m_TowerTexture;
+	Tower::Graphics m_TowerGraphics;
+	uint8			m_nTowers = MAX_TOWERS;
+	Tower			m_Towers[MAX_TOWERS];
 };

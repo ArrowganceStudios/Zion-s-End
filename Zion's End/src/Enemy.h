@@ -24,13 +24,9 @@ public:
 
 		/**
 			Sets the texture, and initializes the sprite
+			@deprecation - to be removed, if it still has no use after introducing enemy buffer
 		*/
 		void SetTexture(sf::Texture* texture);
-
-		/**
-			Rotates the sprite by (angle) degrees
-		*/
-		void Rotate(float angle) { m_IdleSprite.rotate(angle); }
 
 		/**
 			Sets the rotation of the sprite in (angle) degrees
@@ -55,12 +51,6 @@ public:
 	Enemy() = default;
 
 	/**
-		Creates invisible enemy, at pointed position (used for initial creation
-		of enemy, where we spawn him somewhere far away from the map
-	*/
-	Enemy(sf::Vector2f position) : m_Position(position) {};
-
-	/**
 		Constructs the enemy, setting the graphics component, and velocity to 1.
 	*/
 	Enemy(Graphics& graphicsComponent) : m_Graphics(graphicsComponent), m_Velocity(1.0f) {}
@@ -76,17 +66,18 @@ public:
 	void Update(sf::Time deltaTime, Grid* grid);
 
 	/**
-		Returns position
-	*/
-	const sf::Vector2f GetPosition() const { return m_Position; }
-
-	/**
 		Renders the enemy given a render target
 	*/
 	void Render(sf::RenderTarget& renderer);
 
 	/**
+		Returns position
+	*/
+	const sf::Vector2f GetPosition() const { return m_Position; }
+
+	/**
 		Sets the graphics component of the enemy
+		@deprecation to be removed if it has no use after introducing enemy buffer
 	*/
 	void SetGraphicsComponent(Graphics& graphicsComponent) { m_Graphics = graphicsComponent; }
 

@@ -25,6 +25,7 @@
     <ClCompile Include="..\Zion%27s End\src\GUI.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Main.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Resources.cpp" />
+    <ClCompile Include="..\Zion%27s End\src\Tower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Zion%27s End\src\Enemy.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\Zion%27s End\src\LiteralTypes.h" />
     <ClInclude Include="..\Zion%27s End\src\Math.h" />
     <ClInclude Include="..\Zion%27s End\src\Resources.h" />
+    <ClInclude Include="..\Zion%27s End\src\Tower.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2A8C231E-AD6B-4AEF-94B5-38F8227E2F01}</ProjectGuid>

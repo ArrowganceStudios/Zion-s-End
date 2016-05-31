@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Math.h"
+#include "Tower.h"
 #include <iostream>
 #include <fstream>
 #include <thread>
@@ -17,8 +18,12 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 
 	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
+	m_pResources->GetTowerGraphics()->WindowSizeUpdated(m_pRenderTarget->getSize().y, m_pResources->GetGrid()->GetGridHeight());
 
 	LoadMap("assets/map0.map");
+
+	// Temp
+	*m_pResources->GetTowers() = Tower(*m_pResources->GetTowerGraphics(), m_pResources->GetGrid()->GetCenterOfTileIndexedBy(12 * 4 + 5));
 }
 
 void Game::Update(sf::Time deltaTime)
@@ -53,6 +58,9 @@ void Game::Update(sf::Time deltaTime)
 		m_pResources->GetEnemies()[i].Update(deltaTime, m_pResources->GetGrid());
 	}
 
+	// Temp
+	m_pResources->GetTowers()->Update(deltaTime, m_pResources->GetGrid());
+
 	timer += deltaTime;
 	enemySpawnTimer += deltaTime;
 }
@@ -67,6 +75,9 @@ void Game::Render()
 
 	for (int i = 0; i < MAX_ENEMIES; ++i)
 		m_pResources->GetEnemies()[i].Render(*m_pRenderTarget);
+
+	// Temp
+	m_pResources->GetTowers()->Render(*m_pRenderTarget);
 
 	m_pResources->GetGUI()->Render(*m_pRenderTarget);
 	//	endrender

@@ -33,6 +33,9 @@
     <ClCompile Include="..\Zion%27s End\src\Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Zion%27s End\src\Tower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Zion%27s End\src\Game.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Zion%27s End\src\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Zion%27s End\src\Tower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

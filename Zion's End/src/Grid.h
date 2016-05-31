@@ -44,7 +44,7 @@ public:
 	/**
 		Sets window size
 	*/
-	void SetWindowSize(sf::Vector2u size) { m_WindowSize = size; }
+	void SetWindowSize(sf::Vector2u size);
 
 	/**
 		Returns tile located at pixel {x, y}
