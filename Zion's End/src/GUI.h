@@ -36,9 +36,9 @@ public:
 		for (int i = 0; i < MAX_MESSAGES; ++i)
 		{
 			if (m_MessageBuffer.m_Messages[i].m_Alive)
-				str += '+';
+				str += '!';
 			else
-				str += '-';
+				str += '.';
 		}
 		m_BufferText.setString(str); };
 	void RequestMessage(sf::String message, sf::Vector2f position, GUI::MessageType type);

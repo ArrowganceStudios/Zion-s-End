@@ -45,15 +45,9 @@ public:
 
 public:
 	/**
-		Default construct, needs later assignement of graphics component
-		through SetGraphicsComponent(Graphics*) method.
+		Default construct
 	*/
 	Enemy() = default;
-
-	/**
-		Constructs the enemy, setting the graphics component, and velocity to 1.
-	*/
-	Enemy(Graphics& graphicsComponent) : m_Graphics(graphicsComponent), m_Velocity(1.0f) {}
 
 	/**
 		Constructs the enemy, setting the graphics component, and position at starting tile
@@ -76,10 +70,29 @@ public:
 	const sf::Vector2f GetPosition() const { return m_Position; }
 
 	/**
-		Sets the graphics component of the enemy
-		@deprecation to be removed if it has no use after introducing enemy buffer
+		Moves the enemy to the starting tile of given grid
 	*/
-	void SetGraphicsComponent(Graphics& graphicsComponent) { m_Graphics = graphicsComponent; }
+	void ResetPosition(Grid* targetGrid);
+
+	/**
+		Damages the enemy for given value
+	*/
+	void Damage(uint16 damage);
+
+	/**
+		Sets the amount of health points
+	*/
+	void SetHealthPoints(int16 hp) { m_HealthPoints = hp; }
+	
+	/**
+		Sets the state of the enemy
+	*/
+	void SetAlive(bool alive) { m_Alive = alive; }
+
+	/**
+		Checks if the enemy is alive
+	*/
+	bool IsAlive() const { return m_Alive; }
 
 private:
 	/**
@@ -99,6 +112,7 @@ private:
 	float		 m_Velocity;
 	uint8		 m_CurrentTileIndex;
 	uint8		 m_TargetTileIndex;
-	uint8		 m_HealthPoints;
+	int16		 m_HealthPoints;
+	bool		 m_Alive;
 	Graphics	 m_Graphics;
 };

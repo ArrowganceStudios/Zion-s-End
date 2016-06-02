@@ -28,17 +28,20 @@ void Enemy::Graphics::Render(sf::RenderTarget & renderer, const sf::Vector2f pos
 	renderer.draw(m_IdleSprite);
 }
 
-Enemy::Enemy(Graphics& graphicsComponent, Grid * grid) : m_Graphics(graphicsComponent)
-													   , m_CurrentTileIndex(grid->GetStartingTileIndex())
-													   , m_Position(grid->GetCenterOfTileIndexedBy(grid->GetStartingTileIndex()))
-													   , m_TargetTileIndex(m_CurrentTileIndex)
-													   , m_Target(m_Position)
-													   , m_Velocity(100.0f)
+Enemy::Enemy(Graphics& graphicsComponent, Grid * grid)
+													 
 {
+	m_Graphics = graphicsComponent;
+	m_Velocity = 100.0f;
+
+	ResetPosition(grid);
+	SetAlive(false);
 }
 
 void Enemy::Update(sf::Time deltaTime, Grid* grid)
 {
+	if (!IsAlive()) return;
+
 	m_Position += m_Direction * m_Velocity * deltaTime.asSeconds();
 
 	constexpr float MIN_DISTANCE_FOR_SWITCH = 85.0f / 2.0f;
@@ -56,7 +59,25 @@ void Enemy::Update(sf::Time deltaTime, Grid* grid)
 
 void Enemy::Render(sf::RenderTarget& renderer)
 {
+	if (!IsAlive()) return;
 	m_Graphics.Render(renderer, m_Position);
+}
+
+void Enemy::ResetPosition(Grid * targetGrid)
+{
+	m_CurrentTileIndex = targetGrid->GetStartingTileIndex();
+	m_Position = targetGrid->GetCenterOfTileIndexedBy(targetGrid->GetStartingTileIndex());
+	m_TargetTileIndex = m_CurrentTileIndex;
+	m_Target = m_Position;
+}
+
+void Enemy::Damage(uint16 damage)
+{
+	if (!IsAlive()) return;
+	m_HealthPoints -= damage;
+	if (m_HealthPoints < 0) 
+		m_Alive = false;
+	
 }
 
 #pragma warning(push)
