@@ -18,13 +18,10 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 
 	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
-	m_pResources->GetTowerGraphics()->WindowSizeUpdated(m_pRenderTarget->getSize().y, m_pResources->GetGrid()->GetGridHeight());
 	m_pResources->GetEnemyManager()->Init(m_pResources->GetGrid());
+	m_pResources->GetTowerManager()->Init(m_pResources->GetGrid());
 
 	LoadMap("assets/map0.map");
-
-	// Temp
-	*m_pResources->GetTowers() = Tower(*m_pResources->GetTowerGraphics(), m_pResources->GetGrid()->GetCenterOfTileIndexedBy(12 * 4 + 5));
 }
 
 void Game::Update(sf::Time deltaTime)
@@ -35,6 +32,7 @@ void Game::Update(sf::Time deltaTime)
 	sf::Vector2f mousePos((float)sf::Mouse::getPosition(*m_pRenderTarget).x, (float)sf::Mouse::getPosition(*m_pRenderTarget).y);
 
 	m_pResources->GetGUI()->Update(deltaTime);
+	//temp
 	if (timer.asSeconds() > 1.f)
 	{
 		for (int i = 0; i < MAX_ENEMIES; ++i)
@@ -54,15 +52,22 @@ void Game::Update(sf::Time deltaTime)
 	m_pResources->GetGUI()->UpdateMoneyValue(rand() % 10000);
 	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 
+	//temp
 	if (enemySpawnTimer.asSeconds() > 0.5f)
 	{
 		m_pResources->GetEnemyManager()->SpawnEnemy();
 		enemySpawnTimer -= sf::seconds(0.5f);
 	}
+	//temp
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+	{
+		auto tile = m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y);
+		auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
+		m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
+	}
 	
 	m_pResources->GetEnemyManager()->Update(deltaTime);
-	// temp
-	m_pResources->GetTowers()->Update(deltaTime, m_pResources->GetGrid());
+	m_pResources->GetTowerManager()->Update(deltaTime);
 
 	timer += deltaTime;
 	enemySpawnTimer += deltaTime;
@@ -73,14 +78,9 @@ void Game::Render()
 	m_pRenderTarget->clear();
 
 	//	render
-
 	m_pResources->GetGrid()->Render(*m_pRenderTarget);
-
 	m_pResources->GetEnemyManager()->Render(*m_pRenderTarget);
-
-	// Temp
-	m_pResources->GetTowers()->Render(*m_pRenderTarget);
-
+	m_pResources->GetTowerManager()->Render(*m_pRenderTarget);
 	m_pResources->GetGUI()->Render(*m_pRenderTarget);
 	//	endrender
 

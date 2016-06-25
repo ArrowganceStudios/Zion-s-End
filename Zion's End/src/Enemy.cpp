@@ -12,16 +12,6 @@ Enemy::Graphics::Graphics(sf::Texture* texture)
 	m_IdleSprite.setOrigin(textureSize / 2, textureSize / 2);
 }
 
-void Enemy::Graphics::SetTexture(sf::Texture * texture)
-{
-	m_pTexture = texture;
-
-	constexpr uint8 textureSize = 128;
-	m_IdleSprite.setTexture(*m_pTexture);
-	m_IdleSprite.setTextureRect(sf::IntRect(4 * textureSize, 5 * textureSize, textureSize, textureSize));
-	m_IdleSprite.setOrigin(textureSize / 2, textureSize / 2);
-}
-
 void Enemy::Graphics::Render(sf::RenderTarget & renderer, const sf::Vector2f position)
 {
 	m_IdleSprite.setPosition(position);

@@ -11,9 +11,15 @@ public:
 	{
 	public:
 		/**
-			Sets texture, and setups the sprites
+			Default constructor, needs later assignment of a texture
 		*/
-		void SetTexture(sf::Texture* texture);
+		Graphics() = default;
+
+		/**
+			Constructs the graphics, and load the texture specified by the filePath provided in
+			an argument
+		*/
+		Graphics(sf::Texture* texture);
 
 		/**
 			Update sprites to match window size.
@@ -45,7 +51,7 @@ public:
 	/**
 		Sets the position, and initializes Graphics component	
 	*/
-	Tower(Graphics& graphics, const sf::Vector2f position);
+	Tower(Graphics& graphics);
 
 	/**
 		Performs target selection, and shooting on demand
@@ -57,9 +63,41 @@ public:
 	*/
 	void Render(sf::RenderTarget& renderer);
 
+	/**
+		Sets new position
+	*/
+	void SetPosition(sf::Vector2f newPos) { m_Position = newPos; }
+
+	/**
+		Returns position
+	*/
+	sf::Vector2f GetPosition() const { return m_Position; }
+
+	/**
+		Sets rotation of the cannon
+	*/
+	void SetRotation(float angle);
+
+	/**
+		Gets rotation of the cannon
+	*/
+	float GetRotation() { return m_Rotation; }
+
+	/**
+		Sets the state of the tower
+	*/
+	void SetAlive(bool alive) { m_Alive = alive; }
+
+	/**
+		Checks if the tower is alive (placed on the field)
+	*/
+	bool IsAlive() const { return m_Alive; }
+
 private:
 	Graphics	 m_Graphics;
 	sf::Vector2f m_Position;
 	sf::Vector2f m_Target;
 	sf::Time	 m_CanonCooldown;
+	float		 m_Rotation;
+	bool		 m_Alive;
 };

@@ -82,6 +82,11 @@ public:
 	const sf::Vector2f GetTileCenterAt(uint8 column, uint8 row) const;
 
 	/**
+		Gets type of a tile indicated by it's tile coordinates
+	*/
+	Tile::Type GetTypeOfTileAt(uint8 row, uint8 column) { return m_Tiles[row][column].type; }
+
+	/**
 		Sets type of a tile indicated by it's tile coordinates
 	*/
 	void SetTypeOfTileAt(uint8 row, uint8 column, Tile::Type type) { m_Tiles[row][column].type = type; }

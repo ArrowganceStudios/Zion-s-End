@@ -23,12 +23,6 @@ public:
 		Graphics(sf::Texture* texture);
 
 		/**
-			Sets the texture, and initializes the sprite
-			@deprecation - to be removed, if it still has no use after introducing enemy buffer
-		*/
-		void SetTexture(sf::Texture* texture);
-
-		/**
 			Sets the rotation of the sprite in (angle) degrees
 		*/
 		void SetRotation(float angle) { m_IdleSprite.setRotation(angle); }
