@@ -76,10 +76,11 @@ public:
 	 */
 	void ResetPosition(Grid* targetGrid);
 
+	
 	/**
-	 * Damages the enemy for given value
-	 */
-	void Damage(uint16 damage);
+		Damages the enemy for given value
+	*/
+	void Damage(uint16 damage, Resources* resources);
 
 	/**
 	 * Sets the amount of health points
@@ -108,6 +109,10 @@ private:
 	void SetNewTarget(Grid* grid, Grid::Tile* tile);
 
 	/**
+	 *	Causes enemy to die. Sets alive to false and adds money to player.
+	 */
+	void Die(Resources* resources);
+	/*
 	 *	Updates enemy when walking mode is set.
 	 */
 	void UpdateWalking(sf::Time deltaTime, Grid* grid);

@@ -60,13 +60,12 @@ void Enemy::ResetPosition(Grid * targetGrid)
 	m_Target = m_Position;
 }
 
-void Enemy::Damage(uint16 damage)
+void Enemy::Damage(uint16 damage, Resources* resources)
 {
 	if (!IsAlive()) return;
 	m_HealthPoints -= damage;
-	if (m_HealthPoints < 0) 
-		m_Alive = false;
-	
+	if (m_HealthPoints < 0)
+		Die(resources);
 }
 
 #pragma warning(push)
@@ -105,6 +104,12 @@ void Enemy::SetNewTarget(Grid * grid, Grid::Tile * tile)
 	m_Graphics.SetRotation(angle);
 }
 
+void Enemy::Die(Resources* resources)
+{
+	m_Alive = false;
+	resources->GetMoneyManager()->AddMoney(100);
+}
+
 void Enemy::UpdateWalking(sf::Time deltaTime, Grid* grid)
 {
 	m_Position += m_Direction * m_Velocity * deltaTime.asSeconds();
@@ -119,5 +124,4 @@ void Enemy::UpdateWalking(sf::Time deltaTime, Grid* grid)
 
 void Enemy::UpdateAttacking()
 {
-
 }

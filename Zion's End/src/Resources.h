@@ -4,17 +4,19 @@
 #include "GUI.h"
 #include "EnemyManager.h"
 #include "TowerManager.h"
+#include "MoneyManager.h"
 
 class Resources
 {
 public:
-	Resources();
-	~Resources();
+	Resources() = default;
+	~Resources() = default;
 
 	Grid*			GetGrid()			{ return &m_Grid; }
 	GUI*			GetGUI()			{ return &m_GUI; }
 	EnemyManager*	GetEnemyManager()	{ return &m_EnemyManager; }
 	TowerManager*	GetTowerManager()	{ return &m_TowerManager; }
+	MoneyManager*	GetMoneyManager()	{ return &m_MoneyManager; }
 
 private:
 	//	memory content
@@ -22,5 +24,5 @@ private:
 	GUI				m_GUI;
 	EnemyManager	m_EnemyManager;
 	TowerManager	m_TowerManager;
-
+	MoneyManager	m_MoneyManager;
 };
