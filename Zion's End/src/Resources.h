@@ -5,18 +5,21 @@
 #include "EnemyManager.h"
 #include "TowerManager.h"
 #include "ProjectileManager.h"
+#include "MoneyManager.h"
+
 
 class Resources
 {
 public:
-	Resources();
-	~Resources();
+	Resources() = default;
+	~Resources() = default;
 
 	Grid*				GetGrid()				{ return &m_Grid; }
 	GUI*				GetGUI()				{ return &m_GUI; }
 	EnemyManager*		GetEnemyManager()		{ return &m_EnemyManager; }
 	TowerManager*		GetTowerManager()		{ return &m_TowerManager; }
 	ProjectileManager*	GetProjectileManager()	{ return &m_ProjecitleManager; }
+  MoneyManager*	GetMoneyManager()	{ return &m_MoneyManager; }
 
 private:
 	//	memory content
@@ -25,4 +28,5 @@ private:
 	EnemyManager		m_EnemyManager;
 	TowerManager		m_TowerManager;
 	ProjectileManager	m_ProjecitleManager;
+  MoneyManager	m_MoneyManager;
 };

@@ -18,9 +18,10 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 
 	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
-	m_pResources->GetEnemyManager()->Init(m_pResources->GetGrid());
+	m_pResources->GetEnemyManager()->Init(m_pResources);
 	m_pResources->GetTowerManager()->Init(m_pResources);
 	m_pResources->GetProjectileManager()->Init();
+
 	LoadMap("assets/map0.map");
 }
 
@@ -32,8 +33,6 @@ void Game::Update(sf::Time deltaTime)
 	sf::Vector2f mousePos((float)sf::Mouse::getPosition(*m_pRenderTarget).x, (float)sf::Mouse::getPosition(*m_pRenderTarget).y);
 
 	m_pResources->GetGUI()->Update(deltaTime);
-	m_pResources->GetGUI()->UpdateMoneyValue(rand() % 10000);
-	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 
 	//	TODO: Get the dimensions in some smarter way
 	constexpr float enemyRadius = 64;
@@ -56,13 +55,18 @@ void Game::Update(sf::Time deltaTime)
 
 			if (collision)
 			{
+
 				curProj.Collide();
 				curEn.Damage(curProj.GetDamage());
 				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(curProj.GetDamage()), curEn.GetPosition(), GUI::MessageType::NEGATIVE);
 			}
 
 		}
+
 	}
+
+	m_pResources->GetGUI()->UpdateMoneyValue(m_pResources->GetMoneyManager()->GetMoney());
+	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 
 	//temp
 	if (enemySpawnTimer.asSeconds() > 0.5f)
@@ -73,9 +77,13 @@ void Game::Update(sf::Time deltaTime)
 	//temp
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		auto tile = m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y);
-		auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
-		m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
+		if (m_pResources->GetMoneyManager()->GetMoney() >= 500)
+		{
+			auto tile = m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y);
+			auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
+			m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
+			m_pResources->GetMoneyManager()->SubtractMoney(500);
+		}
 	}
 	
 	m_pResources->GetEnemyManager()->Update(deltaTime);
