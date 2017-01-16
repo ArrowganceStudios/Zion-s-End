@@ -41,15 +41,14 @@ void Game::Update(sf::Time deltaTime)
 			if (enemyRef.IsAlive())
 			{
 				uint8 damage = rand() % 15;
-				enemyRef.Damage(damage);
+				enemyRef.Damage(damage, m_pResources);
 				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(damage), enemyRef.GetPosition(), GUI::MessageType::NEGATIVE);
 			}
 		}
 		
-		
 		timer -= sf::seconds(1.f);
 	}
-	m_pResources->GetGUI()->UpdateMoneyValue(rand() % 10000);
+	m_pResources->GetGUI()->UpdateMoneyValue(m_pResources->GetMoneyManager()->GetMoney());
 	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 
 	//temp
@@ -61,9 +60,13 @@ void Game::Update(sf::Time deltaTime)
 	//temp
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		auto tile = m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y);
-		auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
-		m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
+		if (m_pResources->GetMoneyManager()->GetMoney() >= 500)
+		{
+			auto tile = m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y);
+			auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
+			m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
+			m_pResources->GetMoneyManager()->SubtractMoney(500);
+		}
 	}
 	
 	m_pResources->GetEnemyManager()->Update(deltaTime);

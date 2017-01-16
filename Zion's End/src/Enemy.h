@@ -5,6 +5,8 @@
 #include "LiteralTypes.h"
 #include "Grid.h"
 
+class Resources;
+
 class Enemy
 {
 public:
@@ -68,10 +70,11 @@ public:
 	*/
 	void ResetPosition(Grid* targetGrid);
 
+	
 	/**
 		Damages the enemy for given value
 	*/
-	void Damage(uint16 damage);
+	void Damage(uint16 damage, Resources* resources);
 
 	/**
 		Sets the amount of health points
@@ -98,6 +101,11 @@ private:
 		Set new target
 	*/
 	void SetNewTarget(Grid* grid, Grid::Tile* tile);
+
+	/**
+	 *	Causes enemy to die. Sets alive to false and adds money to player.
+	 */
+	void Die(Resources* resources);
 
 private:
 	sf::Vector2f m_Position;
