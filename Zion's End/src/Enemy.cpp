@@ -19,32 +19,30 @@ void Enemy::Graphics::Render(sf::RenderTarget & renderer, const sf::Vector2f pos
 	renderer.draw(m_IdleSprite);
 }
 
-Enemy::Enemy(Graphics& graphicsComponent, Grid * grid)
+Enemy::Enemy(Graphics& graphicsComponent, Resources* resources)
 													 
 {
 	m_Graphics = graphicsComponent;
 	m_Velocity = 100.0f;
+	m_Mode = Mode::WALKING;
 
-	ResetPosition(grid);
+	ResetPosition(resources->GetGrid());
 	SetAlive(false);
 }
 
-void Enemy::Update(sf::Time deltaTime, Grid* grid)
+void Enemy::Update(sf::Time deltaTime, Resources* resources)
 {
 	if (!IsAlive()) return;
-
-	m_Position += m_Direction * m_Velocity * deltaTime.asSeconds();
-
-	constexpr float MIN_DISTANCE_FOR_SWITCH = 85.0f / 2.0f;
-	if (as::Length(m_Target - m_Position) < MIN_DISTANCE_FOR_SWITCH)
+	
+	switch(m_Mode)
 	{
-		auto tile = ChooseNewTileTarget(grid);
-		if (tile == nullptr)
-		{ // TODO change this so the state is switched to "Attacking" instead of "walking"
-			m_Direction = { 0.0f, 0.0f };
-			return;
-		}
-		SetNewTarget(grid, tile);
+	case Mode::WALKING: 
+		UpdateWalking(deltaTime, resources->GetGrid());
+		break;
+	case Mode::ATTACKING: 
+		UpdateAttacking(/* resources->GetBible() */);
+		break;
+	default: break;
 	}
 }
 
@@ -85,6 +83,7 @@ Grid::Tile* Enemy::ChooseNewTileTarget(Grid * grid)
 		}
 		else if (neighbours[i]->type == Grid::Tile::Type::END_TILE)
 		{
+			m_Mode = Mode::ATTACKING;
 			return nullptr;
 		}
 	}
@@ -93,6 +92,9 @@ Grid::Tile* Enemy::ChooseNewTileTarget(Grid * grid)
 
 void Enemy::SetNewTarget(Grid * grid, Grid::Tile * tile)
 {
+	if (!tile)
+		return;
+
 	m_CurrentTileIndex = m_TargetTileIndex;
 	m_TargetTileIndex = tile->index;
 	m_Target = grid->GetCenterOfTileIndexedBy(tile->index);
@@ -106,4 +108,20 @@ void Enemy::Die(Resources* resources)
 {
 	m_Alive = false;
 	resources->GetMoneyManager()->AddMoney(100);
+}
+
+void Enemy::UpdateWalking(sf::Time deltaTime, Grid* grid)
+{
+	m_Position += m_Direction * m_Velocity * deltaTime.asSeconds();
+
+	constexpr float MIN_DISTANCE_FOR_SWITCH = 85.0f / 2.0f;
+	if (as::Length(m_Target - m_Position) < MIN_DISTANCE_FOR_SWITCH)
+	{
+		auto tile = ChooseNewTileTarget(grid);
+		SetNewTarget(grid, tile);
+	}
+}
+
+void Enemy::UpdateAttacking()
+{
 }

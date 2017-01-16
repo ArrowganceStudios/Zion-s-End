@@ -18,7 +18,7 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 
 	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
-	m_pResources->GetEnemyManager()->Init(m_pResources->GetGrid());
+	m_pResources->GetEnemyManager()->Init(m_pResources);
 	m_pResources->GetTowerManager()->Init(m_pResources->GetGrid());
 
 	LoadMap("assets/map0.map");
