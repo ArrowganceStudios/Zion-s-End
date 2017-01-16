@@ -18,7 +18,8 @@ int main()
 				mainWindow.close();
 		}
 
-		instance.Update(g_Clock.restart());
+		//instance.Update(g_Clock.restart());
+		instance.Update(sf::milliseconds(16));
 		instance.Render();
 	}
 

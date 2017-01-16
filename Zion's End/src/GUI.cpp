@@ -72,7 +72,7 @@ void GUI::RequestMessage(sf::String message, sf::Vector2f position, GUI::Message
 
 void GUI::MessageBuffer::Push(sf::String message, sf::Vector2f position, GUI::MessageType type)
 {
-	if (m_UsedCnt == MAX_MESSAGES) return;
+	if (m_UsedCnt >= MAX_MESSAGES) return;
 
 	unsigned int index = (m_IdxOfFirst + m_UsedCnt) % MAX_MESSAGES;
 	Message &msgRef = m_Messages[index];
@@ -106,7 +106,8 @@ void GUI::MessageBuffer::Pop()
 	msgRef.m_Alive = false;
 
 	m_IdxOfFirst = (m_IdxOfFirst + 1) % MAX_MESSAGES;
-	--m_UsedCnt;
+	if(m_UsedCnt > 0)
+		--m_UsedCnt;
 }
 
 void GUI::MessageBuffer::Clear()

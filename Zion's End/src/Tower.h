@@ -4,6 +4,8 @@
 
 #include "Grid.h"
 
+class Resources;
+
 class Tower
 {
 public:
@@ -56,12 +58,17 @@ public:
 	/**
 		Performs target selection, and shooting on demand
 	*/
-	void Update(sf::Time deltaTime, Grid* grid);
+	void Update(sf::Time deltaTime, Resources* resources);
 
 	/**
 		Renders the tower
 	*/
 	void Render(sf::RenderTarget& renderer);
+
+	/**
+	 *	Shoots projectile
+	 */
+	void Shoot(Resources* resources);
 
 	/**
 		Sets new position
