@@ -98,6 +98,11 @@ public:
 	 */
 	bool IsAlive() const { return m_Alive; }
 
+	/**
+	* Sets the mode of operation
+	*/
+	void SetMode(Mode mode) { m_Mode = mode; }
+
 private:
 	/**
 	 * Choose new target based on neighbouring tiles

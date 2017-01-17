@@ -10,10 +10,10 @@ Projectile::Graphics::Graphics(sf::Texture* texture)
 	m_pTexture = texture;
 	uint8 textureSize = texture->getSize().x;
 	m_Sprite.setTexture(*m_pTexture);
-	m_Sprite.setOrigin(textureSize / 2, textureSize / 2);
+	m_Sprite.setOrigin((float)(textureSize / 2), (float)(textureSize / 2));
 
 	//TODO:	to consult
-	float randomScale = 0.33;
+	constexpr float randomScale = 0.33f;
 	m_Sprite.setScale(randomScale, randomScale);
 }
 

@@ -123,7 +123,7 @@ void GUI::MessageBuffer::Clear()
 
 void GUI::MessageBuffer::Erode(sf::Time timeStep)
 {
-	for (int i = m_IdxOfFirst; i < m_IdxOfFirst + m_UsedCnt; ++i)
+	for (unsigned i = m_IdxOfFirst; i < m_IdxOfFirst + m_UsedCnt; ++i)
 	{
 		Message &msgRef = m_Messages[i % MAX_MESSAGES];
 		msgRef.m_LifeTime -= timeStep;

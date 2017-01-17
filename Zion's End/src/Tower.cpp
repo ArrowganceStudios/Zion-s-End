@@ -21,7 +21,7 @@ Tower::Graphics::Graphics(sf::Texture* texture)
 	m_CanonSprite.setOrigin({ canonTextureWidth / 2.0f, (float)canonTextureHeight + 25.0f });
 
 	//TODO:	to consult
-	float randomScale = 0.33;
+	constexpr float randomScale = 0.33f;
 	m_TowerSprite.setScale(randomScale, randomScale);
 	m_CanonSprite.setScale(randomScale, randomScale);
 }
@@ -51,7 +51,7 @@ Tower::Tower(Graphics & graphics) : m_Graphics(graphics)
 {
 	m_Graphics = graphics;
 	m_CanonCooldown = sf::seconds(DEFAULT_COOLDOWN);
-	SetRotation(rand());	//	TODO: AUTO AIM
+	SetRotation((float)rand());	//	TODO: AUTO AIM
 	SetAlive(false);
 }
 

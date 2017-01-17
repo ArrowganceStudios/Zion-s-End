@@ -34,6 +34,7 @@ void EnemyManager::SpawnEnemy()
 			m_EnemyArray[i].ResetPosition(m_pResources->GetGrid());
 			m_EnemyArray[i].SetAlive(true);
 			m_EnemyArray[i].SetHealthPoints(100);
+			m_EnemyArray[i].SetMode(Enemy::Mode::WALKING);
 			break;
 		}
 	}
