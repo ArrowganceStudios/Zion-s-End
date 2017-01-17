@@ -19,7 +19,8 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 	m_pResources->GetGrid()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetGUI()->SetWindowSize(m_pRenderTarget->getSize());
 	m_pResources->GetEnemyManager()->Init(m_pResources);
-	m_pResources->GetTowerManager()->Init(m_pResources->GetGrid());
+	m_pResources->GetTowerManager()->Init(m_pResources);
+	m_pResources->GetProjectileManager()->Init();
 
 	LoadMap("assets/map0.map");
 }
@@ -32,22 +33,38 @@ void Game::Update(sf::Time deltaTime)
 	sf::Vector2f mousePos((float)sf::Mouse::getPosition(*m_pRenderTarget).x, (float)sf::Mouse::getPosition(*m_pRenderTarget).y);
 
 	m_pResources->GetGUI()->Update(deltaTime);
-	//temp
-	if (timer.asSeconds() > 1.f)
+
+	//	TODO: Get the dimensions in some smarter way
+	constexpr float enemyRadius = 64;
+	constexpr float projectileRadius = 30;
+	constexpr float radiiSum = enemyRadius + projectileRadius;
+
+	for (int i = 0; i < MAX_PROJECTILES; ++i)
 	{
-		for (int i = 0; i < MAX_ENEMIES; ++i)
+		auto& curProj = (*m_pResources->GetProjectileManager())[i];
+		if (!curProj.IsAlive())
+			continue;
+
+		for (int j = 0; j < MAX_ENEMIES; ++j)
 		{
-			Enemy& enemyRef = (*m_pResources->GetEnemyManager())[i];
-			if (enemyRef.IsAlive())
+			auto& curEn = (*m_pResources->GetEnemyManager())[j];
+			if (!curEn.IsAlive())
+				continue;
+
+			bool collision = radiiSum > as::Length(curProj.GetPosition() - curEn.GetPosition());
+
+			if (collision)
 			{
-				uint8 damage = rand() % 15;
-				enemyRef.Damage(damage, m_pResources);
-				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(damage), enemyRef.GetPosition(), GUI::MessageType::NEGATIVE);
+
+				curProj.Collide();
+				curEn.Damage(curProj.GetDamage(), m_pResources);
+				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(curProj.GetDamage()), curEn.GetPosition(), GUI::MessageType::NEGATIVE);
 			}
+
 		}
-		
-		timer -= sf::seconds(1.f);
+
 	}
+
 	m_pResources->GetGUI()->UpdateMoneyValue(m_pResources->GetMoneyManager()->GetMoney());
 	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
 
@@ -71,6 +88,7 @@ void Game::Update(sf::Time deltaTime)
 	
 	m_pResources->GetEnemyManager()->Update(deltaTime);
 	m_pResources->GetTowerManager()->Update(deltaTime);
+	m_pResources->GetProjectileManager()->Update(deltaTime);
 
 	timer += deltaTime;
 	enemySpawnTimer += deltaTime;
@@ -83,6 +101,7 @@ void Game::Render()
 	//	render
 	m_pResources->GetGrid()->Render(*m_pRenderTarget);
 	m_pResources->GetEnemyManager()->Render(*m_pRenderTarget);
+	m_pResources->GetProjectileManager()->Render(*m_pRenderTarget);
 	m_pResources->GetTowerManager()->Render(*m_pRenderTarget);
 	m_pResources->GetGUI()->Render(*m_pRenderTarget);
 	//	endrender

@@ -31,7 +31,23 @@ namespace as
 	}
 
 	/**
-		Returns the direction from source to the destination
+		Returns value in degrees, provided argument in radians
+	*/
+	inline float RadToDeg(float angle)
+	{
+		return angle * 57.2957795f;
+	}
+
+	/**
+	 *	Returns value in radians, provided argument in degrees
+	 */
+	inline float DegToRad(float angle)
+	{
+		return angle / 57.2957795f;
+	}
+
+	/**
+	Returns the direction from source to the destination
 	*/
 	inline sf::Vector2f Direction(sf::Vector2f source, sf::Vector2f destination)
 	{
@@ -39,10 +55,11 @@ namespace as
 	}
 
 	/**
-		Returns value in degrees, provided argument in radians
+	Returns the direction based on angle (in radians)
 	*/
-	inline float RadToDeg(float angle)
+	inline sf::Vector2f Direction(float angle)
 	{
-		return angle * 57.2957795f;
+		float rad = DegToRad(angle);
+		return sf::Vector2f(cosf(rad), sinf(rad));
 	}
 }

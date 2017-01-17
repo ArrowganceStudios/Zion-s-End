@@ -19,9 +19,10 @@ public:
 		Graphics() = default;
 
 		/**
-		 * Constructs the graphics, and load the texture specified by the filePath provided in
-		 * an argument
-		 */
+			Constructs the graphics, and load the texture specified by the pointer provided in
+			an argument
+		*/
+
 		Graphics(sf::Texture* texture);
 
 		/**

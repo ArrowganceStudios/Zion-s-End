@@ -3,10 +3,12 @@
 
 constexpr unsigned int MAX_TOWERS = 16;
 
+class Resources;
+
 class TowerManager
 {
 public:
-	void Init(Grid *targetGrid);
+	void Init(Resources* targetResources);
 
 	void Update(sf::Time deltaTime);
 	void Render(sf::RenderTarget &renderer);
@@ -16,7 +18,7 @@ public:
 	Tower& operator[](unsigned int index) { return m_TowerArray[index % MAX_TOWERS]; }
 
 private:
-	Grid* m_pTargetGrid;
+	Resources* m_pResources;
 
 	Tower m_TowerArray[MAX_TOWERS];
 	sf::Texture m_TowerTexture;
