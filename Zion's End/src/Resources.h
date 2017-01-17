@@ -19,7 +19,7 @@ public:
 	EnemyManager*		GetEnemyManager()		{ return &m_EnemyManager; }
 	TowerManager*		GetTowerManager()		{ return &m_TowerManager; }
 	ProjectileManager*	GetProjectileManager()	{ return &m_ProjecitleManager; }
-  MoneyManager*	GetMoneyManager()	{ return &m_MoneyManager; }
+	MoneyManager*		GetMoneyManager()		{ return &m_MoneyManager; }
 
 private:
 	//	memory content
@@ -28,5 +28,5 @@ private:
 	EnemyManager		m_EnemyManager;
 	TowerManager		m_TowerManager;
 	ProjectileManager	m_ProjecitleManager;
-  MoneyManager	m_MoneyManager;
+	MoneyManager		m_MoneyManager;
 };

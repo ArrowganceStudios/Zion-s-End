@@ -57,7 +57,7 @@ void Game::Update(sf::Time deltaTime)
 			{
 
 				curProj.Collide();
-				curEn.Damage(curProj.GetDamage());
+				curEn.Damage(curProj.GetDamage(), m_pResources);
 				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(curProj.GetDamage()), curEn.GetPosition(), GUI::MessageType::NEGATIVE);
 			}
 

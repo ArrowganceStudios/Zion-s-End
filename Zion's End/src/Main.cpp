@@ -19,7 +19,7 @@ int main()
 		}
 
 		//instance.Update(g_Clock.restart());
-		instance.Update(sf::milliseconds(16));
+		instance.Update(sf::milliseconds(16));	//	TODO: Return to previous at the end of developlent
 		instance.Render();
 	}
 

@@ -25,6 +25,8 @@
     <ClCompile Include="..\Zion%27s End\src\Grid.cpp" />
     <ClCompile Include="..\Zion%27s End\src\GUI.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Main.cpp" />
+    <ClCompile Include="..\Zion%27s End\src\Projectile.cpp" />
+    <ClCompile Include="..\Zion%27s End\src\ProjectileManager.cpp" />
     <ClCompile Include="..\Zion%27s End\src\Tower.cpp" />
     <ClCompile Include="..\Zion%27s End\src\TowerManager.cpp" />
   </ItemGroup>
@@ -37,6 +39,8 @@
     <ClInclude Include="..\Zion%27s End\src\LiteralTypes.h" />
     <ClInclude Include="..\Zion%27s End\src\Math.h" />
     <ClInclude Include="..\Zion%27s End\src\MoneyManager.h" />
+    <ClInclude Include="..\Zion%27s End\src\Projectile.h" />
+    <ClInclude Include="..\Zion%27s End\src\ProjectileManager.h" />
     <ClInclude Include="..\Zion%27s End\src\Resources.h" />
     <ClInclude Include="..\Zion%27s End\src\Tower.h" />
     <ClInclude Include="..\Zion%27s End\src\TowerManager.h" />
