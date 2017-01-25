@@ -6,6 +6,7 @@
 #include "TowerManager.h"
 #include "ProjectileManager.h"
 #include "MoneyManager.h"
+#include "Bible.h"
 
 
 class Resources
@@ -20,6 +21,7 @@ public:
 	TowerManager*		GetTowerManager()		{ return &m_TowerManager; }
 	ProjectileManager*	GetProjectileManager()	{ return &m_ProjecitleManager; }
 	MoneyManager*		GetMoneyManager()		{ return &m_MoneyManager; }
+	Bible*				GetBible()				{ return &m_Bible; }
 
 private:
 	//	memory content
@@ -29,4 +31,5 @@ private:
 	TowerManager		m_TowerManager;
 	ProjectileManager	m_ProjecitleManager;
 	MoneyManager		m_MoneyManager;
+	Bible				m_Bible;
 };

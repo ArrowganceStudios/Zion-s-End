@@ -5,6 +5,7 @@
 #include "LiteralTypes.h"
 #include "Grid.h"
 
+class Bible;
 class Resources;
 
 class Enemy
@@ -126,7 +127,7 @@ private:
 	/**
 	*	Updates enemy when attacking mode is set.
 	*/
-	void UpdateAttacking();
+	void UpdateAttacking(Bible* bible);
 
 private:
 	sf::Vector2f m_Position;
@@ -139,4 +140,7 @@ private:
 	Mode		 m_Mode;
 	bool		 m_Alive;
 	Graphics	 m_Graphics;
+
+	static constexpr uint16 DEFAULT_DAMAGE = 5;
+	static constexpr float  DEFAULT_VELOCITY = 100.0f;
 };

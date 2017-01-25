@@ -29,6 +29,7 @@ public:
 	void Render(sf::RenderTarget& renderer) const;
 	void Update(sf::Time deltaTime);
 
+	void UpdateTitle(sf::String message);
 	void UpdateMoneyValue(int newValue);
 	void UpdateHealthValue(int newValue);
 	void UpdateBufferValue() {
