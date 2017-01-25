@@ -23,7 +23,7 @@ Enemy::Enemy(Graphics& graphicsComponent, Resources* resources)
 													 
 {
 	m_Graphics = graphicsComponent;
-	m_Velocity = 100.0f;
+	m_Velocity = DEFAULT_VELOCITY;
 	m_Mode = Mode::WALKING;
 
 	ResetPosition(resources->GetGrid());
@@ -40,7 +40,7 @@ void Enemy::Update(sf::Time deltaTime, Resources* resources)
 		UpdateWalking(deltaTime, resources->GetGrid());
 		break;
 	case Mode::ATTACKING: 
-		UpdateAttacking(/* resources->GetBible() */);
+		UpdateAttacking(resources->GetBible());
 		break;
 	default: break;
 	}
@@ -122,6 +122,10 @@ void Enemy::UpdateWalking(sf::Time deltaTime, Grid* grid)
 	}
 }
 
-void Enemy::UpdateAttacking()
+void Enemy::UpdateAttacking(Bible* bible)
 {
+	// TODO add some cooldown
+	// TODO randomize damage
+	uint16 damage = DEFAULT_DAMAGE;
+	bible->TakeDamage(damage);
 }

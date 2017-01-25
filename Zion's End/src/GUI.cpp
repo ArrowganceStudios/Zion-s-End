@@ -55,6 +55,11 @@ void GUI::Update(sf::Time deltaTime)
 	UpdateBufferValue();
 }
 
+void GUI::UpdateTitle(sf::String message)
+{
+	m_TitleText.setString(message);
+}
+
 void GUI::UpdateMoneyValue(int newValue)
 {
 	m_MoneyText.setString("Money: " + std::to_string(newValue));

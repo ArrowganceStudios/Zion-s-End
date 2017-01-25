@@ -25,6 +25,7 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 	LoadMap("assets/map0.map");
 }
 
+//TODO: Update method has grown too big. Divide it into several inline functions
 void Game::Update(sf::Time deltaTime)
 {
 	static sf::Time timer;
@@ -66,7 +67,7 @@ void Game::Update(sf::Time deltaTime)
 	}
 
 	m_pResources->GetGUI()->UpdateMoneyValue(m_pResources->GetMoneyManager()->GetMoney());
-	m_pResources->GetGUI()->UpdateHealthValue(rand() % 100);
+	m_pResources->GetGUI()->UpdateHealthValue(m_pResources->GetBible()->GetHealth());
 
 	//temp
 	if (enemySpawnTimer.asSeconds() > 0.5f)
@@ -89,6 +90,15 @@ void Game::Update(sf::Time deltaTime)
 	m_pResources->GetEnemyManager()->Update(deltaTime);
 	m_pResources->GetTowerManager()->Update(deltaTime);
 	m_pResources->GetProjectileManager()->Update(deltaTime);
+
+	if(m_pResources->GetBible()->GetStatus() == Bible::Status::DEAD)
+	{
+		// TODO: Obviously change this place holder with some actual logic.
+		static bool gameEnded = false;
+		if (gameEnded) return;
+		gameEnded = true;
+		m_pResources->GetGUI()->UpdateTitle("Game over. Zion's bible has been exegesed");
+	}
 
 	timer += deltaTime;
 	enemySpawnTimer += deltaTime;
