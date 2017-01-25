@@ -91,7 +91,7 @@ void Game::Update(sf::Time deltaTime)
 	m_pResources->GetTowerManager()->Update(deltaTime);
 	m_pResources->GetProjectileManager()->Update(deltaTime);
 
-	if(m_pResources->GetBible()->GetStatus() == Bible::Status::DEAD)
+	if(m_pResources->GetBible()->IsAlive() == false)
 	{
 		// TODO: Obviously change this place holder with some actual logic.
 		static bool gameEnded = false;
