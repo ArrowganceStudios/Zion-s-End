@@ -1,10 +1,6 @@
 #include "Projectile.h"
 #include "Math.h"
 
-constexpr float DEFAULT_VELOCITY = 250.f;
-constexpr float DEFAULT_RANGE = 500.f;
-constexpr uint16 DEFAULT_DAMAGE = 30;
-
 Projectile::Graphics::Graphics(sf::Texture* texture)
 {
 	m_pTexture = texture;

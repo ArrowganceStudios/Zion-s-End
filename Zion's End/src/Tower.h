@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Grid.h"
+#include "Enemy.h"
 
 class Resources;
 
@@ -103,8 +104,9 @@ public:
 private:
 	Graphics	 m_Graphics;
 	sf::Vector2f m_Position;
-	sf::Vector2f m_Target;
+	Enemy*		 m_Target;
 	sf::Time	 m_CanonCooldown;
 	float		 m_Rotation;
+	float		 m_Range;
 	bool		 m_Alive;
 };

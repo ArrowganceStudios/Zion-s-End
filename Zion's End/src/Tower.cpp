@@ -51,6 +51,8 @@ Tower::Tower(Graphics & graphics) : m_Graphics(graphics)
 {
 	m_Graphics = graphics;
 	m_CanonCooldown = sf::seconds(DEFAULT_COOLDOWN);
+	m_Target = nullptr;
+	m_Range = DEFAULT_RANGE;
 	SetRotation((float)rand());	//	TODO: AUTO AIM
 	SetAlive(false);
 }
@@ -59,14 +61,46 @@ void Tower::Update(sf::Time deltaTime, Resources * resources)
 {
 	if (!IsAlive()) return;
 
-	// TODO: target selection
-	//float rotation = GetRotation();
-	//rotation += deltaTime.asMilliseconds() / 2.0f;
-	//SetRotation(rotation);
-
 	m_CanonCooldown -= deltaTime;
-	if (m_CanonCooldown < sf::seconds(0))
-		Shoot(resources);
+
+	if(m_Target)
+	{
+		sf::Vector2f relPos = m_Target->GetPosition() - m_Position;
+		float dist = as::Length(relPos);
+		if (dist >= m_Range)
+			m_Target = nullptr;
+		else
+		{
+			SetRotation(as::VectorOrientation(relPos));
+			if (m_CanonCooldown < sf::seconds(0))
+				Shoot(resources);
+		}
+	}
+	else
+	{
+		auto enemyMngr = resources->GetEnemyManager();
+		Enemy* closestEnemy = nullptr;
+
+		float minDistance = FLT_MAX;
+		for (int i = 0; i < MAX_ENEMIES; ++i)
+		{
+			auto enemy = &(*enemyMngr)[i];
+			if (!enemy->IsAlive())
+				continue;
+
+			float distance = as::Length(enemy->GetPosition() - m_Position);
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				closestEnemy = enemy;
+			}
+		}
+		if (minDistance <= m_Range)
+			m_Target = closestEnemy;
+	}
+
+
 }
 
 void Tower::Render(sf::RenderTarget & renderer)
