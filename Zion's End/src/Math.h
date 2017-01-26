@@ -62,4 +62,12 @@ namespace as
 		float rad = DegToRad(angle);
 		return sf::Vector2f(cosf(rad), sinf(rad));
 	}
+
+	/**
+	 *	Returns orientation angle of given vector (in degrees)
+	 */
+	inline float VectorOrientation(sf::Vector2f vec)
+	{
+		return RadToDeg(atan2(vec.y, vec.x));
+	}
 }

@@ -100,8 +100,7 @@ void Enemy::SetNewTarget(Grid * grid, Grid::Tile * tile)
 	m_Target = grid->GetCenterOfTileIndexedBy(tile->index);
 
 	m_Direction = as::Direction(m_Position, m_Target);
-	float angle = as::RadToDeg(atan2(m_Direction.y, m_Direction.x));
-	m_Graphics.SetRotation(angle);
+	m_Graphics.SetRotation(as::VectorOrientation(m_Direction));
 }
 
 void Enemy::Die(Resources* resources)

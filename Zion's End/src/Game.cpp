@@ -36,8 +36,9 @@ void Game::Update(sf::Time deltaTime)
 	m_pResources->GetGUI()->Update(deltaTime);
 
 	//	TODO: Get the dimensions in some smarter way
-	constexpr float enemyRadius = 64;
-	constexpr float projectileRadius = 30;
+	constexpr float randomScale = 0.33f;
+	constexpr float enemyRadius = 64 * randomScale;
+	constexpr float projectileRadius = 30 * randomScale;
 	constexpr float radiiSum = enemyRadius + projectileRadius;
 
 	for (int i = 0; i < MAX_PROJECTILES; ++i)
@@ -81,9 +82,12 @@ void Game::Update(sf::Time deltaTime)
 		if (m_pResources->GetMoneyManager()->GetMoney() >= 500)
 		{
 			auto tile = m_pResources->GetGrid()->GetTileAtPixel(mousePos.x, mousePos.y);
-			auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
-			m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
-			m_pResources->GetMoneyManager()->SubtractMoney(500);
+			if(tile.type == Grid::Tile::Type::VACANT_TILE)
+			{
+				auto gridWidth = m_pResources->GetGrid()->GetGridWidth();
+				m_pResources->GetTowerManager()->SpawnTower(tile.index / gridWidth, tile.index % gridWidth);
+				m_pResources->GetMoneyManager()->SubtractMoney(500);
+			}
 		}
 	}
 	
