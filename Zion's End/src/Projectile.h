@@ -4,6 +4,9 @@
 
 #include "LiteralTypes.h"
 
+constexpr float DEFAULT_VELOCITY = 250.f;
+constexpr float DEFAULT_RANGE = 250.f;
+constexpr uint16 DEFAULT_DAMAGE = 100;
 
 class Projectile
 {

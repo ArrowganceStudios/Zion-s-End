@@ -7,7 +7,6 @@ constexpr uint16 canonTextureWidth = 95;
 constexpr uint16 canonTextureHeight = 160;
 constexpr uint16 towerTextureSize = 256;
 constexpr float DEFAULT_COOLDOWN = 2.f;
-constexpr float DEFAULT_RANGE = 250.f;
 
 Tower::Graphics::Graphics(sf::Texture* texture)
 {
@@ -97,7 +96,7 @@ void Tower::Update(sf::Time deltaTime, Resources * resources)
 				closestEnemy = enemy;
 			}
 		}
-		if (minDistance <= m_Range && closestEnemy != nullptr)
+		if (minDistance <= m_Range)
 			m_Target = closestEnemy;
 	}
 
