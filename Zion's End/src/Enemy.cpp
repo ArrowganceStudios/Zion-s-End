@@ -25,6 +25,7 @@ Enemy::Enemy(Graphics& graphicsComponent, Resources* resources)
 	m_Graphics = graphicsComponent;
 	m_Velocity = DEFAULT_VELOCITY;
 	m_Mode = Mode::WALKING;
+	m_AttackCooldown = sf::seconds(0.0f);
 
 	ResetPosition(resources->GetGrid());
 	SetAlive(false);
@@ -34,13 +35,15 @@ void Enemy::Update(sf::Time deltaTime, Resources* resources)
 {
 	if (!IsAlive()) return;
 	
+	UpdateAttackCooldown(deltaTime);
+
 	switch(m_Mode)
 	{
 	case Mode::WALKING: 
 		UpdateWalking(deltaTime, resources->GetGrid());
 		break;
 	case Mode::ATTACKING: 
-		UpdateAttacking(resources->GetBible());
+		UpdateAttacking(resources->GetBible(), resources->GetGUI());
 		break;
 	default: break;
 	}
@@ -121,10 +124,31 @@ void Enemy::UpdateWalking(sf::Time deltaTime, Grid* grid)
 	}
 }
 
-void Enemy::UpdateAttacking(Bible* bible)
+void Enemy::UpdateAttacking(Bible* bible, GUI* gui)
 {
-	// TODO add some cooldown
-	// TODO randomize damage
-	uint16 damage = DEFAULT_DAMAGE;
+	if (IsAttackOnCooldown()) return;
+
+	uint16 damage = GetRandomizedDamage(DEFAULT_DAMAGE, 3);
+	gui->RequestMessage("-" + std::to_string(damage), bible->GetPosition(), GUI::NEGATIVE);
 	bible->TakeDamage(damage);
+
+	m_AttackCooldown = sf::seconds(DEFAULT_COOLDOWN);
+}
+
+inline bool Enemy::IsAttackOnCooldown() const
+{
+	return m_AttackCooldown > sf::seconds(0);
+}
+
+void Enemy::UpdateAttackCooldown(sf::Time delta)
+{
+	m_AttackCooldown -= delta;
+}
+
+uint16 Enemy::GetRandomizedDamage(const uint16 mean, const uint16 variance)
+{
+	uint16 randomDamage = (rand() % (2 * variance)) - variance;
+	uint16 damage = mean + randomDamage;
+
+	return damage;
 }

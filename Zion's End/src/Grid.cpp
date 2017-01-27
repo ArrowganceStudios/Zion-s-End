@@ -129,6 +129,8 @@ const uint8 Grid::GetStartingTileIndex() const
 				return m_Tiles[i][j].index;
 		}
 	}
+
+	return -1;
 }
 #pragma warning(pop)
 
@@ -147,6 +149,19 @@ void Grid::Render(sf::RenderTarget& renderer)
 			renderer.draw(sprite);
 		}
 	}
+}
+
+sf::Vector2f Grid::GetBiblePosition()
+{
+	for (int i = 0; i < s_Height; ++i)
+	{
+		for (int j = 0; j < s_Width; ++j)
+		{
+			if (m_Tiles[i][j].type == Grid::Tile::Type::END_TILE)
+				return GetCenterOfTileIndexedBy(m_Tiles[i][j].index);
+		}
+	}
+	return{ -1.0f, -1.0f };
 }
 
 Grid::Tile& Grid::GetTileReferenceAtPixel(float x, float y)
