@@ -129,6 +129,8 @@ const uint8 Grid::GetStartingTileIndex() const
 				return m_Tiles[i][j].index;
 		}
 	}
+
+	return -1;
 }
 #pragma warning(pop)
 
@@ -149,8 +151,6 @@ void Grid::Render(sf::RenderTarget& renderer)
 	}
 }
 
-#pragma warning(push)
-#pragma warning(disable: 4715)
 sf::Vector2f Grid::GetBiblePosition()
 {
 	for (int i = 0; i < s_Height; ++i)
@@ -161,8 +161,8 @@ sf::Vector2f Grid::GetBiblePosition()
 				return GetCenterOfTileIndexedBy(m_Tiles[i][j].index);
 		}
 	}
+	return{ -1.0f, -1.0f };
 }
-#pragma warning(pop)
 
 Grid::Tile& Grid::GetTileReferenceAtPixel(float x, float y)
 {
