@@ -4,6 +4,7 @@
 
 #include "LiteralTypes.h"
 #include "Grid.h"
+#include "GUI.h"
 
 class Bible;
 class Resources;
@@ -57,7 +58,7 @@ public:
 	 * Constructs the enemy, setting the graphics component, and position at starting tile
 	 */
 	Enemy(Graphics& graphicsComponent, Resources* resources);
-
+	
 	/**
 	 * Called each gameloop iteration, performs AI operations
 	 */
@@ -123,16 +124,32 @@ private:
 	 *	Updates enemy when walking mode is set.
 	 */
 	void UpdateWalking(sf::Time deltaTime, Grid* grid);
-
+	
 	/**
 	*	Updates enemy when attacking mode is set.
 	*/
-	void UpdateAttacking(Bible* bible);
+	void UpdateAttacking(::Bible* bible, GUI* gui);
+
+	/**
+	 *	Returns whether the attack is on cooldown
+	 */
+	inline bool IsAttackOnCooldown() const;
+
+	/**
+	 *	Updates the cooldown of the attack
+	 */
+	void UpdateAttackCooldown(sf::Time delta);
+
+	/**
+	 *	Returns randomized damage value based on provided mean and variance
+	 */
+	uint16 GetRandomizedDamage(const uint16 mean, const uint16 variance);
 
 private:
 	sf::Vector2f m_Position;
 	sf::Vector2f m_Direction;
 	sf::Vector2f m_Target;
+	sf::Time	 m_AttackCooldown;
 	float		 m_Velocity;
 	uint8		 m_CurrentTileIndex;
 	uint8		 m_TargetTileIndex;
@@ -143,4 +160,5 @@ private:
 
 	static constexpr uint16 DEFAULT_DAMAGE = 5;
 	static constexpr float  DEFAULT_VELOCITY = 100.0f;
+	static constexpr float  DEFAULT_COOLDOWN = 2.0f;
 };

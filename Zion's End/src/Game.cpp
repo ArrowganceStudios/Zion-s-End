@@ -23,6 +23,7 @@ void Game::Init(sf::RenderWindow &r_TargetWindow)
 	m_pResources->GetProjectileManager()->Init();
 
 	LoadMap("assets/map0.map");
+	m_pResources->GetBible()->Init(m_pResources->GetGrid()->GetBiblePosition(), 1000);
 }
 
 //TODO: Update method has grown too big. Divide it into several inline functions
@@ -60,7 +61,7 @@ void Game::Update(sf::Time deltaTime)
 
 				curProj.Collide();
 				curEn.Damage(curProj.GetDamage(), m_pResources);
-				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(curProj.GetDamage()), curEn.GetPosition(), GUI::MessageType::NEGATIVE);
+				m_pResources->GetGUI()->RequestMessage("-" + std::to_string(curProj.GetDamage()), curEn.GetPosition(), GUI::MessageType::NEUTRAL);
 			}
 
 		}

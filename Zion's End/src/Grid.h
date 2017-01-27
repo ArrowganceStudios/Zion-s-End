@@ -111,6 +111,10 @@ public:
 	*/
 	void Render(sf::RenderTarget& renderer);
 
+	/**
+	 *	Returns Zion's Bible position
+	 */
+	sf::Vector2f GetBiblePosition();
 private:
 	/**
 		Returns reference to the tile at specified pixel position {x, y}

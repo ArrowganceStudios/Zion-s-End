@@ -149,6 +149,21 @@ void Grid::Render(sf::RenderTarget& renderer)
 	}
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4715)
+sf::Vector2f Grid::GetBiblePosition()
+{
+	for (int i = 0; i < s_Height; ++i)
+	{
+		for (int j = 0; j < s_Width; ++j)
+		{
+			if (m_Tiles[i][j].type == Grid::Tile::Type::END_TILE)
+				return GetCenterOfTileIndexedBy(m_Tiles[i][j].index);
+		}
+	}
+}
+#pragma warning(pop)
+
 Grid::Tile& Grid::GetTileReferenceAtPixel(float x, float y)
 {
 	const float normalizedX = x / (float)m_WindowSize.x;
